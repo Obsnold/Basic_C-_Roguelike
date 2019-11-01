@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RogueLike", "RogueLike\RogueLike.csproj", "{56AF00CC-9692-4A83-BC6D-978AD0F9FA82}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56AF00CC-9692-4A83-BC6D-978AD0F9FA82}.Debug|x86.ActiveCfg = Debug|x86
+		{56AF00CC-9692-4A83-BC6D-978AD0F9FA82}.Debug|x86.Build.0 = Debug|x86
+		{56AF00CC-9692-4A83-BC6D-978AD0F9FA82}.Release|x86.ActiveCfg = Release|x86
+		{56AF00CC-9692-4A83-BC6D-978AD0F9FA82}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal
