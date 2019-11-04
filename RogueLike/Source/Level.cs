@@ -6,8 +6,6 @@ namespace RogueLike
 	public enum LevelTiles{
 		Wall,
 		Floor,
-		DoorClosed,
-		DoorOpen,
 		Ladder,
 	}
 
@@ -23,11 +21,15 @@ namespace RogueLike
 		string Tag;
 		public int Width;
 		public int Height;
-		public bool[,] VisibilityGrid;
-		public LevelTiles [,] TileGrid;
-		//public ObjectInterface[,] 
+
+
+		public LevelTiles [,] BaseGrid;
+		public ObjectInterface[,] ObjectGrid;
 		public Creature[,] CreatureGrid;
+		public bool[,] VisibilityGrid;
+
 		public Creature Player;
+
 		public List<room> RoomList;
 		public History History;
 		Debug Debug = Debug.Instance;
@@ -38,7 +40,8 @@ namespace RogueLike
 			this.Width = aWidth;
 			this.Height = aHeight;
 			this.Player = new Creature("Player", this.Width / 2, this.Height/2, 20 ,2,0);
-			this.TileGrid = new LevelTiles[this.Width,this.Height];
+			this.BaseGrid = new LevelTiles[this.Width,this.Height];
+			this.ObjectGrid = new ObjectInterface[this.Width,this.Height];
 			this.CreatureGrid = new Creature[this.Width,this.Height];
 			this.VisibilityGrid = new bool[this.Width, this.Height];
 			this.RoomList = new List<room>();
@@ -47,13 +50,8 @@ namespace RogueLike
 
 		public bool moveCreature(Creature aCreature, int aX, int aY){
 			bool result = false;
-
-			if((aX < this.Width) && (aY < this.Height) &&
-				(aX > 0) && (aY > 0) &&
-				((this.TileGrid[aCreature.X,aCreature.Y] == LevelTiles.Ladder) ||
-					(this.TileGrid[aCreature.X,aCreature.Y] == LevelTiles.Floor) ||
-					(this.TileGrid[aCreature.X,aCreature.Y] == LevelTiles.DoorOpen)) &&
-				(this.CreatureGrid[aX,aY] == null))
+			if(this.InBounds(aX,aY) &&
+				(!this.PathBlocked(aX,aY)))
 			{
 				this.CreatureGrid [aCreature.X, aCreature.Y] = null;
 				aCreature.X = aX;
@@ -125,6 +123,15 @@ namespace RogueLike
 				lY = this.Height-1;
 			}
 			return lY;
+		}
+
+		public bool InBounds(int aX, int aY){
+			bool lInBounds = true;
+			if((aX < 0) || (aX >= this.Width) ||
+				(aY < 0) || (aY >= this.Height)){
+				lInBounds = false;
+			}
+			return lInBounds;
 		}
 
 		public bool InLineOfSight(Creature aCreature, Creature aTarget){
@@ -202,11 +209,42 @@ namespace RogueLike
 		public bool SightBlocked(int aX, int aY){
 			bool lIsBlocked = false;
 
-			if((this.TileGrid[aX,aY] == LevelTiles.DoorClosed) || 
-				(this.TileGrid[aX,aY] == LevelTiles.Wall)){
+			//check base grid
+			if((this.BaseGrid[aX,aY] == LevelTiles.Wall)){
 				lIsBlocked = true;
 			}
+
+			//check object grid
+			if (ObjectGrid [aX, aY] != null) {
+				if(!ObjectGrid [aX, aY].CanSeePast()){
+					lIsBlocked = true;
+				}
+			}
 			return lIsBlocked;
+		}
+
+		public bool PathBlocked(int aX, int aY){
+			bool lIsBlocked = false;
+
+			//check base grid
+			if((this.BaseGrid[aX,aY] == LevelTiles.Wall)){
+				lIsBlocked = true;
+			}
+
+			//check object grid
+			if (ObjectGrid [aX, aY] != null) {
+				if(!ObjectGrid [aX, aY].CanWalk()){
+					lIsBlocked = true;
+				}
+			}
+
+			//check Creaturegrid
+			if (CreatureGrid [aX, aY] != null) {
+				lIsBlocked = true;
+			}
+
+			return lIsBlocked;
+
 		}
 	}
 }

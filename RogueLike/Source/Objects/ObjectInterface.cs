@@ -8,6 +8,7 @@ namespace RogueLike
 		bool TakeDamage(int aDamage);
 		bool CanWalk();
 		bool CanSeePast();
+		DisplayTile GetDisplayTile();
 	}
 }
 

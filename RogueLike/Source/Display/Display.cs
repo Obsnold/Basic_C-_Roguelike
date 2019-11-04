@@ -74,19 +74,12 @@ namespace RogueLike
 				int lTY = lY + y;
 				for (int x = 0; x < (aLevel.Player.Vision * 2) + 1; x++){
 					int lTX = lX + x;
-					if ((lTY < 0) || (lTY >= aLevel.Height) ||
-						(lTX < 0) || (lTX >= aLevel.Width)) {
+					if ( !aLevel.InBounds(lTX,lTY) ) {
 						printChar (' ', x + this.MapPosX, y + this.MapPosY);
 					} else {
 						if (aLevel.VisibilityGrid [lTX, lTY]) {
 							if (aLevel.CreatureGrid [lTX, lTY] == null) {
-								switch (aLevel.TileGrid [lTX, lTY]) {
-								case LevelTiles.DoorClosed:
-									lTempChar = 'D';
-									break;
-								case LevelTiles.DoorOpen:
-									lTempChar = 'd';
-									break;
+								switch (aLevel.BaseGrid [lTX, lTY]) {
 								case LevelTiles.Floor:
 									lTempChar = '.';
 									break;
@@ -97,16 +90,32 @@ namespace RogueLike
 									lTempChar = 'L';
 									break;
 								}
+
+								if (aLevel.ObjectGrid [lTX, lTY] != null) {
+									switch (aLevel.ObjectGrid [lTX, lTY].GetDisplayTile()) {
+									case DisplayTile.DoorClosed:
+										lTempChar = 'D';
+										break;
+									case DisplayTile.DoorOpen:
+										lTempChar = 'd';
+										break;
+									}
+
+								}
 							} else {
 								lTempChar = 'e';
 							}
-							printChar (lTempChar, x + this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision), y + this.MapPosY+ ((this.MapHeight/2)-aLevel.Player.Vision));
+							printChar (lTempChar, 
+								x + this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision), 
+								y + this.MapPosY + ((this.MapHeight/2)-aLevel.Player.Vision));
 						}
 					}
 				}
 			}
 			//print character
-			printChar ('@', aLevel.Player.Vision+this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision) ,aLevel.Player.Vision+this.MapPosY+ ((this.MapHeight/2)-aLevel.Player.Vision));
+			printChar ('@', 
+				aLevel.Player.Vision+this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision) ,
+				aLevel.Player.Vision+this.MapPosY + ((this.MapHeight/2)-aLevel.Player.Vision));
 		}
 
 		public void printStats(Level aLevel){

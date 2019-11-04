@@ -45,7 +45,7 @@ namespace RogueLike
 			tempRoom.w = 3;
 			if (placeRoom (tempRoom)) {
 				this.Level.RoomList.Add (tempRoom);
-				this.Level.TileGrid[tempRoom.x+1,tempRoom.y+1] = LevelTiles.Ladder;
+				this.Level.BaseGrid[tempRoom.x+1,tempRoom.y+1] = LevelTiles.Ladder;
 			}
 
 			//Generate Rooms
@@ -89,7 +89,8 @@ namespace RogueLike
 					break;
 				}
 				if (placeRoom (tempRoom)) {
-					this.Level.TileGrid [tempX,tempY] = LevelTiles.DoorClosed;
+					this.Level.BaseGrid [tempX, tempY] = LevelTiles.Floor;
+					this.Level.ObjectGrid [tempX,tempY] = new Door();
 				}
 			}
 
@@ -130,7 +131,7 @@ namespace RogueLike
 			if (roomPlaced) {
 				for (int y = aRoom.y - 1; y < aRoom.y + aRoom.h + 1; y++) {
 					for (int x = aRoom.x - 1; x < aRoom.x + aRoom.w + 1; x++) {
-						if (this.Level.TileGrid [x,y] == LevelTiles.Floor) {
+						if (this.Level.BaseGrid [x,y] == LevelTiles.Floor) {
 							roomPlaced = false;
 							break;
 						}
@@ -140,7 +141,7 @@ namespace RogueLike
 			if (roomPlaced) {
 				for (int y = aRoom.y; y < aRoom.y+aRoom.h; y++) {
 					for (int x = aRoom.x; x < aRoom.x+aRoom.w; x++) {
-						this.Level.TileGrid [x,y] = LevelTiles.Floor;
+						this.Level.BaseGrid [x,y] = LevelTiles.Floor;
 					}
 				}
 			}
@@ -153,7 +154,7 @@ namespace RogueLike
 		void clearLevel(){
 			for (int y = 0; y < this.LevelHeight; y++) {
 				for (int x = 0; x < this.LevelWidth; x++) {
-					this.Level.TileGrid [x,y] = LevelTiles.Wall;
+					this.Level.BaseGrid [x,y] = LevelTiles.Wall;
 				}
 			}
 		}

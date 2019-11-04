@@ -5,7 +5,7 @@ namespace RogueLike
 	public enum ActionType{
 		Move,
 		Attack,
-		Open,
+		Interact,
 		None
 	}
 

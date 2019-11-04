@@ -25,8 +25,8 @@ namespace RogueLike
 			case ActionType.Move:
 				this.HistoryList.Add ("Move!");
 				break;
-			case ActionType.Open:
-				this.HistoryList.Add ("Open!");
+			case ActionType.Interact:
+				this.HistoryList.Add ("Interact!");
 				break;
 			case ActionType.None:
 				this.HistoryList.Add ("Do Nothing.");

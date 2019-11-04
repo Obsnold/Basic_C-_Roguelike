@@ -100,18 +100,20 @@ namespace RogueLike
 						returnAction.Type = ActionType.Attack;
 					}
 				} else {
-					switch (this.Level.TileGrid [returnAction.X, returnAction.Y]) {
-					case LevelTiles.DoorClosed:
-						this.Debug.Print  ( this.Tag, "DOOR_CLOSED",20);
-						returnAction.Type = ActionType.Open;
-						break;
-					case LevelTiles.DoorOpen:
-						this.Debug.Print  ( this.Tag, "DOOR_OPEN",20);
-						returnAction.Type = ActionType.Move;
-						break;
+					switch (this.Level.BaseGrid [returnAction.X, returnAction.Y]) {
 					case LevelTiles.Floor:
-						this.Debug.Print  ( this.Tag, "FLOOR",20);
-						returnAction.Type = ActionType.Move;
+						if (this.Level.ObjectGrid [returnAction.X, returnAction.Y] != null) {
+							if (this.Level.ObjectGrid [returnAction.X, returnAction.Y].CanWalk ()) {
+								this.Debug.Print (this.Tag, "DOOR_MOVE", 20);
+								returnAction.Type = ActionType.Move;
+							} else {
+								this.Debug.Print (this.Tag, "DOOR_INTERACT", 20);
+								returnAction.Type = ActionType.Interact;
+							}
+						} else {
+							this.Debug.Print (this.Tag, "FLOOR_MOVE", 20);
+							returnAction.Type = ActionType.Move;
+						}
 						break;
 					case LevelTiles.Ladder:
 						this.Debug.Print  ( this.Tag, "LADDER",20);
@@ -137,8 +139,8 @@ namespace RogueLike
 				this.Level.moveCreature (aCreature,aAction.X,aAction.Y);
 				validAction = true;
 				break;
-			case ActionType.Open:
-				this.Level.TileGrid [aAction.X, aAction.Y] = LevelTiles.DoorOpen;
+			case ActionType.Interact:
+				this.Level.ObjectGrid [aAction.X, aAction.Y].Interact (aCreature);
 				validAction = true;
 				break;
 			case ActionType.Attack:
