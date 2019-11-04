@@ -11,13 +11,12 @@ namespace RogueLike
 
 	public class Action{
 		public ActionType Type;
-		public int X;
-		public int Y;
+		public Coodinate pos;
 
 		public Action(ActionType aType, int aX, int aY){
 			this.Type = aType;
-			this.X = aX;
-			this.Y = aY;
+			this.pos.x = aX;
+			this.pos.y = aY;
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace RogueLike
 			this.Rand = new Random ();
 			this.LevelGen.genLevel ();
 			this.Level = this.LevelGen.getLevel ();
-			this.Level.moveCreature (this.Level.Player,this.Level.Player.X,this.Level.Player.Y);
+			this.Level.moveCreature (this.Level.Player,this.Level.Player.pos.x,this.Level.Player.pos.y);
 			this.Level.ComputePlayerFOV ();
 			this.Display.printMainScreen (this.Level);
 			this.Tag = this.GetType().Name;
@@ -59,51 +59,53 @@ namespace RogueLike
 		}
 
 		Action ProcessKeyPress(Creature aCreature,RogueKey aKeyPress){
-			Action returnAction = new Action (ActionType.None, aCreature.X, aCreature.Y);
+			Action returnAction = new Action (ActionType.None, aCreature.pos.x, aCreature.pos.y);
 
 			this.Debug.Print  ( this.Tag, "KEYPRESS:" + aKeyPress.ToString (),20);
 
 			switch(aKeyPress){
 			case RogueKey.SouthWest:
-				returnAction.X -= 1;
-				returnAction.Y += 1;
+				returnAction.pos.x -= 1;
+				returnAction.pos.y += 1;
 				break;
 			case RogueKey.South:
-				returnAction.Y += 1;
+				returnAction.pos.y += 1;
 				break;
 			case RogueKey.SouthEast:
-				returnAction.X += 1;
-				returnAction.Y += 1;
+				returnAction.pos.x += 1;
+				returnAction.pos.y += 1;
 				break;
 			case RogueKey.West:
-				returnAction.X -= 1;
+				returnAction.pos.x -= 1;
 				break;
 			case RogueKey.East:
-				returnAction.X += 1;
+				returnAction.pos.x += 1;
 				break;
 			case RogueKey.NorthWest:
-				returnAction.X -= 1;
-				returnAction.Y -= 1;
+				returnAction.pos.x -= 1;
+				returnAction.pos.y -= 1;
 				break;
 			case RogueKey.North:
-				returnAction.Y -= 1;
+				returnAction.pos.y -= 1;
 				break;
 			case RogueKey.NorthEast:
-				returnAction.X += 1;
-				returnAction.Y -= 1;
+				returnAction.pos.x += 1;
+				returnAction.pos.y -= 1;
 				break;
 			}
 
-			if(this.Level.CreatureGrid[returnAction.X, returnAction.Y] != aCreature){
-				if (this.Level.CreatureGrid[returnAction.X, returnAction.Y] != null) {
-					if (this.Level.CreatureGrid [returnAction.X, returnAction.Y].Group != aCreature.Group) {
+			if(this.Level.CreatureGrid.GetItem(returnAction.pos) != aCreature){
+				Creature lTarget = this.Level.CreatureGrid.GetItem (returnAction.pos);
+				if (lTarget != null) {
+					if (lTarget.Group != aCreature.Group) {
 						returnAction.Type = ActionType.Attack;
 					}
 				} else {
-					switch (this.Level.BaseGrid [returnAction.X, returnAction.Y]) {
-					case LevelTiles.Floor:
-						if (this.Level.ObjectGrid [returnAction.X, returnAction.Y] != null) {
-							if (this.Level.ObjectGrid [returnAction.X, returnAction.Y].CanWalk ()) {
+					switch (this.Level.BaseGrid.GetItem (returnAction.pos)) {
+						case LevelTiles.Floor:
+						ObjectInterface lObject = this.Level.ObjectGrid.GetItem(returnAction.pos);
+						if (lObject != null) {
+							if (lObject.CanWalk ()) {
 								this.Debug.Print (this.Tag, "DOOR_MOVE", 20);
 								returnAction.Type = ActionType.Move;
 							} else {
@@ -132,19 +134,19 @@ namespace RogueLike
 
 		private bool ProcessAction(Creature aCreature, Action aAction){
 			bool validAction = false;
-			this.Debug.Print  (this.Tag, "ProcessAction- aCreature.X: " + aCreature.X.ToString() + " aCreature.Y: " + aCreature.Y.ToString() + " aX: " 
-				+ aAction.X.ToString() +" aY: " + aAction.Y.ToString() + " Type:" + aAction.Type.ToString(),20);
+			this.Debug.Print  (this.Tag, "ProcessAction- aCreature.pos.x: " + aCreature.pos.x.ToString() + " aCreature.pos.y: " + aCreature.pos.y.ToString() + " aX: " 
+				+ aAction.pos.x.ToString() +" aY: " + aAction.pos.y.ToString() + " Type:" + aAction.Type.ToString(),20);
 			switch(aAction.Type){
 			case ActionType.Move:
-				this.Level.moveCreature (aCreature,aAction.X,aAction.Y);
+				this.Level.moveCreature (aCreature,aAction.pos.x,aAction.pos.y);
 				validAction = true;
 				break;
 			case ActionType.Interact:
-				this.Level.ObjectGrid [aAction.X, aAction.Y].Interact (aCreature);
+				this.Level.ObjectGrid.GetItem(aAction.pos).Interact (aCreature);
 				validAction = true;
 				break;
 			case ActionType.Attack:
-				Creature lTarget = this.Level.getCreature (aAction.X, aAction.Y);
+				Creature lTarget = this.Level.getCreature (aAction.pos.x, aAction.pos.y);
 				if (lTarget != null) {
 					if(lTarget.TakeDamage(aCreature.Strength)){
 						this.Level.removeCreature (lTarget);
@@ -166,21 +168,21 @@ namespace RogueLike
 			RogueKey lAIMove = RogueKey.NA;
 			if(this.Level.InLineOfSight(aCreature,this.Level.Player)){
 				this.Debug.Print  ( this.Tag, "InLineOfSight Yes",20);
-				if (aCreature.X > this.Level.Player.X && aCreature.Y < this.Level.Player.Y) {
+				if (aCreature.pos.x > this.Level.Player.pos.x && aCreature.pos.y < this.Level.Player.pos.y) {
 					lAIMove = RogueKey.SouthWest;
-				} else if (aCreature.X == this.Level.Player.X && aCreature.Y < this.Level.Player.Y) {
+				} else if (aCreature.pos.x == this.Level.Player.pos.x && aCreature.pos.y < this.Level.Player.pos.y) {
 					lAIMove = RogueKey.South;
-				} else if (aCreature.X < this.Level.Player.X && aCreature.Y < this.Level.Player.Y) {
+				} else if (aCreature.pos.x < this.Level.Player.pos.x && aCreature.pos.y < this.Level.Player.pos.y) {
 					lAIMove = RogueKey.SouthEast;
-				} else if (aCreature.X > this.Level.Player.X && aCreature.Y == this.Level.Player.Y) {
+				} else if (aCreature.pos.x > this.Level.Player.pos.x && aCreature.pos.y == this.Level.Player.pos.y) {
 					lAIMove = RogueKey.West;
-				} else if (aCreature.X < this.Level.Player.X && aCreature.Y == this.Level.Player.Y) {
+				} else if (aCreature.pos.x < this.Level.Player.pos.x && aCreature.pos.y == this.Level.Player.pos.y) {
 					lAIMove = RogueKey.East;
-				} else if (aCreature.X > this.Level.Player.X && aCreature.Y > this.Level.Player.Y) {
+				} else if (aCreature.pos.x > this.Level.Player.pos.x && aCreature.pos.y > this.Level.Player.pos.y) {
 					lAIMove = RogueKey.NorthWest;
-				} else if (aCreature.X == this.Level.Player.X && aCreature.Y > this.Level.Player.Y) {
+				} else if (aCreature.pos.x == this.Level.Player.pos.x && aCreature.pos.y > this.Level.Player.pos.y) {
 					lAIMove = RogueKey.North;
-				} else if (aCreature.X < this.Level.Player.X && aCreature.Y > this.Level.Player.Y) {
+				} else if (aCreature.pos.x < this.Level.Player.pos.x && aCreature.pos.y > this.Level.Player.pos.y) {
 					lAIMove = RogueKey.NorthEast;
 				}
 			} else {

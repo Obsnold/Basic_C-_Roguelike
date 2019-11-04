@@ -3,8 +3,7 @@
 namespace RogueLike
 {
 	public class Creature{
-		public int X;
-		public int Y;
+		public Coodinate pos;
 		public int Health;
 		public int Strength;
 		public int Group;
@@ -13,8 +12,8 @@ namespace RogueLike
 
 		public Creature(String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup){
 			this.Name = aName;
-			this.X = aX;
-			this.Y = aY;
+			this.pos.x = aX;
+			this.pos.y = aY;
 			this.Health = aHealth;
 			this.Strength = aStrength;
 			this.Group = aGroup;

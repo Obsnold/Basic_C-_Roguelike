@@ -68,8 +68,8 @@ namespace RogueLike
 
 		public void printMap(Level aLevel){
 			char lTempChar = ' ';
-			int lY = aLevel.Player.Y - aLevel.Player.Vision;
-			int lX = aLevel.Player.X - aLevel.Player.Vision;
+			int lY = aLevel.Player.pos.y - aLevel.Player.Vision;
+			int lX = aLevel.Player.pos.x - aLevel.Player.Vision;
 			for (int y = 0; y < (aLevel.Player.Vision * 2) + 1; y++){
 				int lTY = lY + y;
 				for (int x = 0; x < (aLevel.Player.Vision * 2) + 1; x++){
@@ -77,9 +77,9 @@ namespace RogueLike
 					if ( !aLevel.InBounds(lTX,lTY) ) {
 						printChar (' ', x + this.MapPosX, y + this.MapPosY);
 					} else {
-						if (aLevel.VisibilityGrid [lTX, lTY]) {
-							if (aLevel.CreatureGrid [lTX, lTY] == null) {
-								switch (aLevel.BaseGrid [lTX, lTY]) {
+						if (aLevel.VisibilityGrid.GetItem(lTX, lTY)) {
+							if (aLevel.CreatureGrid.GetItem(lTX, lTY) == null) {
+								switch (aLevel.BaseGrid.GetItem(lTX, lTY)) {
 								case LevelTiles.Floor:
 									lTempChar = '.';
 									break;
@@ -91,8 +91,8 @@ namespace RogueLike
 									break;
 								}
 
-								if (aLevel.ObjectGrid [lTX, lTY] != null) {
-									switch (aLevel.ObjectGrid [lTX, lTY].GetDisplayTile()) {
+								if (aLevel.ObjectGrid.GetItem(lTX, lTY) != null) {
+									switch (aLevel.ObjectGrid.GetItem(lTX, lTY).GetDisplayTile()) {
 									case DisplayTile.DoorClosed:
 										lTempChar = 'D';
 										break;

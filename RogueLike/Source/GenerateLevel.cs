@@ -45,7 +45,7 @@ namespace RogueLike
 			tempRoom.w = 3;
 			if (placeRoom (tempRoom)) {
 				this.Level.RoomList.Add (tempRoom);
-				this.Level.BaseGrid[tempRoom.x+1,tempRoom.y+1] = LevelTiles.Ladder;
+				this.Level.BaseGrid.SetItem(LevelTiles.Ladder,tempRoom.x+1,tempRoom.y+1);
 			}
 
 			//Generate Rooms
@@ -89,8 +89,8 @@ namespace RogueLike
 					break;
 				}
 				if (placeRoom (tempRoom)) {
-					this.Level.BaseGrid [tempX, tempY] = LevelTiles.Floor;
-					this.Level.ObjectGrid [tempX,tempY] = new Door();
+					this.Level.BaseGrid.SetItem(LevelTiles.Floor, tempX, tempY);
+					this.Level.ObjectGrid.SetItem(new Door(),tempX,tempY);
 				}
 			}
 
@@ -100,7 +100,7 @@ namespace RogueLike
 				room lTempRoom = this.Level.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
 				Creature lCreature = new Creature (this.Names[this.Rand.Next(0,this.Names.Count)],this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w),
 					this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h), 4, 1, 1);
-				if (!this.Level.moveCreature (lCreature, lCreature.X, lCreature.Y)) {
+				if (!this.Level.moveCreature (lCreature, lCreature.pos.x, lCreature.pos.y)) {
 					//debugPrint ("Cannot place Creature");
 				}
 			}
@@ -131,7 +131,7 @@ namespace RogueLike
 			if (roomPlaced) {
 				for (int y = aRoom.y - 1; y < aRoom.y + aRoom.h + 1; y++) {
 					for (int x = aRoom.x - 1; x < aRoom.x + aRoom.w + 1; x++) {
-						if (this.Level.BaseGrid [x,y] == LevelTiles.Floor) {
+						if (this.Level.BaseGrid.GetItem(x,y) == LevelTiles.Floor) {
 							roomPlaced = false;
 							break;
 						}
@@ -141,7 +141,7 @@ namespace RogueLike
 			if (roomPlaced) {
 				for (int y = aRoom.y; y < aRoom.y+aRoom.h; y++) {
 					for (int x = aRoom.x; x < aRoom.x+aRoom.w; x++) {
-						this.Level.BaseGrid [x,y] = LevelTiles.Floor;
+						this.Level.BaseGrid.SetItem(LevelTiles.Floor,x,y);
 					}
 				}
 			}
@@ -154,7 +154,7 @@ namespace RogueLike
 		void clearLevel(){
 			for (int y = 0; y < this.LevelHeight; y++) {
 				for (int x = 0; x < this.LevelWidth; x++) {
-					this.Level.BaseGrid [x,y] = LevelTiles.Wall;
+					this.Level.BaseGrid.SetItem(LevelTiles.Wall,x,y);
 				}
 			}
 		}

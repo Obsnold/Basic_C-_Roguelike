@@ -23,10 +23,10 @@ namespace RogueLike
 		public int Height;
 
 
-		public LevelTiles [,] BaseGrid;
-		public ObjectInterface[,] ObjectGrid;
-		public Creature[,] CreatureGrid;
-		public bool[,] VisibilityGrid;
+		public Grid<LevelTiles> BaseGrid;
+		public Grid<ObjectInterface> ObjectGrid;
+		public Grid<Creature> CreatureGrid;
+		public Grid<bool> VisibilityGrid;
 
 		public Creature Player;
 
@@ -40,10 +40,10 @@ namespace RogueLike
 			this.Width = aWidth;
 			this.Height = aHeight;
 			this.Player = new Creature("Player", this.Width / 2, this.Height/2, 20 ,2,0);
-			this.BaseGrid = new LevelTiles[this.Width,this.Height];
-			this.ObjectGrid = new ObjectInterface[this.Width,this.Height];
-			this.CreatureGrid = new Creature[this.Width,this.Height];
-			this.VisibilityGrid = new bool[this.Width, this.Height];
+			this.BaseGrid = new Grid<LevelTiles>(this.Width,this.Height);
+			this.ObjectGrid = new Grid<ObjectInterface>(this.Width,this.Height);
+			this.CreatureGrid = new Grid<Creature>(this.Width,this.Height);
+			this.VisibilityGrid = new Grid<bool>(this.Width,this.Height);
 			this.RoomList = new List<room>();
 			this.History = new History ();
 		}
@@ -53,13 +53,17 @@ namespace RogueLike
 			if(this.InBounds(aX,aY) &&
 				(!this.PathBlocked(aX,aY)))
 			{
-				this.CreatureGrid [aCreature.X, aCreature.Y] = null;
-				aCreature.X = aX;
-				aCreature.Y = aY;
-				this.CreatureGrid [aCreature.X, aCreature.Y] = aCreature;
+				this.CreatureGrid.SetItem (null, aCreature.pos.x, aCreature.pos.y);
+				aCreature.pos.x = aX;
+				aCreature.pos.y = aY;
+				this.CreatureGrid.SetItem (aCreature, aCreature.pos.x, aCreature.pos.y);
 				result = true;
 			}
 			return result;
+		}
+
+		public bool moveCreature(Creature aCreature, Coodinate aCoord){
+			return moveCreature(aCreature, aCoord.x, aCoord.y);
 		}
 
 		public List<Creature> getCreatureList(){
@@ -67,8 +71,9 @@ namespace RogueLike
 
 			for (int y = 0; y < this.Height; y++) {
 				for (int x = 0; x < this.Width; x++) {
-					if(this.CreatureGrid[x,y] != null){
-						lTempList.Add (this.CreatureGrid [x, y]);
+					Creature lTemp = this.CreatureGrid.GetItem (x, y);
+					if(lTemp != null){
+						lTempList.Add (lTemp);
 					}
 				}
 			}
@@ -76,28 +81,25 @@ namespace RogueLike
 		}
 
 		public Creature getCreature(int aX, int aY){
-			if(this.CreatureGrid[aX,aY] != null){
-				return this.CreatureGrid [aX, aY];
-			} 
-			return null;
+			return this.CreatureGrid.GetItem (aX, aY);
 		}
 
 		public void removeCreature(Creature aCreature){
-			this.CreatureGrid [aCreature.X, aCreature.Y] = null;
+			this.CreatureGrid.SetItem(null, aCreature.pos.x, aCreature.pos.y);
 		}
 
 		public void ComputePlayerFOV(){
 			for(int y = 0; y < this.Height; y++){
 				for (int x = 0; x < this.Width; x++) {
-					this.VisibilityGrid [x, y] = false;
+					this.VisibilityGrid.SetItem(false,x, y);
 				}
 			}
-			int lY = CheckY(this.Player.Y - this.Player.Vision);
-			int lX = CheckX(this.Player.X - this.Player.Vision);
+			int lY = CheckY(this.Player.pos.y - this.Player.Vision);
+			int lX = CheckX(this.Player.pos.x - this.Player.Vision);
 
 			for (int y = lY; y < (this.Player.Vision*2)+1+lY; y++) {
 				for (int x = lX; x < (this.Player.Vision*2)+1+lX; x++) {
-					this.VisibilityGrid[CheckX(x),CheckY(y)] = InLineOfSight (this.Player,x,y);
+					this.VisibilityGrid.SetItem (InLineOfSight (this.Player,x,y),CheckX (x), CheckY (y));
 				}
 			}
 
@@ -135,13 +137,17 @@ namespace RogueLike
 		}
 
 		public bool InLineOfSight(Creature aCreature, Creature aTarget){
-			return InLineOfSight (aCreature, aTarget.X, aTarget.Y);
+			return InLineOfSight (aCreature, aTarget.pos.x, aTarget.pos.y);
+		}
+
+		public bool InLineOfSight(Creature aCreature, Coodinate aCoord){
+			return InLineOfSight (aCreature, aCoord.x, aCoord.y);
 		}
 
 		public bool InLineOfSight(Creature aCreature, int aX, int aY){
 			bool lCanSee = true;
-			int lX1 = aCreature.X;
-			int lY1 = aCreature.Y;
+			int lX1 = aCreature.pos.x;
+			int lY1 = aCreature.pos.y;
 			int lX2 = aX;
 			int lY2 = aY;
 
@@ -200,8 +206,8 @@ namespace RogueLike
 			}
 
 
-			this.Debug.Print (this.Tag, "InLineOfSight: " + lCanSee.ToString () + " playerX:" + aCreature.X.ToString () 
-				+ " playerY:" + aCreature.Y.ToString () + " lX1:" + lX1.ToString () + " lY1:" + lY1.ToString (), 20);
+			this.Debug.Print (this.Tag, "InLineOfSight: " + lCanSee.ToString () + " playerX:" + aCreature.pos.x.ToString () 
+				+ " playerY:" + aCreature.pos.y.ToString () + " lX1:" + lX1.ToString () + " lY1:" + lY1.ToString (), 20);
 
 			return lCanSee;
 		}
@@ -210,13 +216,14 @@ namespace RogueLike
 			bool lIsBlocked = false;
 
 			//check base grid
-			if((this.BaseGrid[aX,aY] == LevelTiles.Wall)){
+			if((this.BaseGrid.GetItem(aX,aY) == LevelTiles.Wall)){
 				lIsBlocked = true;
 			}
 
 			//check object grid
-			if (ObjectGrid [aX, aY] != null) {
-				if(!ObjectGrid [aX, aY].CanSeePast()){
+			ObjectInterface lObj = ObjectGrid.GetItem(aX,aY);
+			if (lObj != null) {
+				if(!lObj.CanSeePast()){
 					lIsBlocked = true;
 				}
 			}
@@ -227,19 +234,20 @@ namespace RogueLike
 			bool lIsBlocked = false;
 
 			//check base grid
-			if((this.BaseGrid[aX,aY] == LevelTiles.Wall)){
+			if((this.BaseGrid.GetItem(aX,aY) == LevelTiles.Wall)){
 				lIsBlocked = true;
 			}
 
 			//check object grid
-			if (ObjectGrid [aX, aY] != null) {
-				if(!ObjectGrid [aX, aY].CanWalk()){
+			ObjectInterface lObj = ObjectGrid.GetItem(aX,aY);
+			if (lObj != null) {
+				if(!lObj.CanWalk()){
 					lIsBlocked = true;
 				}
 			}
 
 			//check Creaturegrid
-			if (CreatureGrid [aX, aY] != null) {
+			if (CreatureGrid.GetItem(aX,aY) != null) {
 				lIsBlocked = true;
 			}
 
