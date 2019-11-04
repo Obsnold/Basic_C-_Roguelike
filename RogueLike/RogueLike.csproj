@@ -49,8 +49,9 @@
     <Compile Include="Source\Menus\MainMenu.cs" />
     <Compile Include="Source\Display\Display.cs" />
     <Compile Include="Source\Display\DisplayTiles.cs" />
-    <Compile Include="Source\Coodinate.cs" />
     <Compile Include="Source\Grid.cs" />
+    <Compile Include="Source\Coordinate.cs" />
+    <Compile Include="Source\Objects\Chest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

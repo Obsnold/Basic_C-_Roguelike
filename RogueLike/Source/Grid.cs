@@ -23,7 +23,7 @@ namespace RogueLike
 			}
 		}
 
-		public T GetItem(Coodinate aCoord){
+		public T GetItem(Coordinate aCoord){
 			return GetItem(aCoord.x,aCoord.y);
 		}
 
@@ -36,7 +36,7 @@ namespace RogueLike
 			return lResult;
 		}
 
-		public bool SetItem(T aItem, Coodinate aCoord){
+		public bool SetItem(T aItem, Coordinate aCoord){
 			return SetItem(aItem,aCoord.x,aCoord.y);
 		}
 
@@ -49,7 +49,7 @@ namespace RogueLike
 			return lInBounds;
 		}
 
-		public bool InBounds(Coodinate aCoord){
+		public bool InBounds(Coordinate aCoord){
 			return InBounds (aCoord);
 		}
 	}

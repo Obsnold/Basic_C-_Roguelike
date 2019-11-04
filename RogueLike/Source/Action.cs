@@ -11,7 +11,7 @@ namespace RogueLike
 
 	public class Action{
 		public ActionType Type;
-		public Coodinate pos;
+		public Coordinate pos;
 
 		public Action(ActionType aType, int aX, int aY){
 			this.Type = aType;

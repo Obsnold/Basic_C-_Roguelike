@@ -3,7 +3,7 @@
 namespace RogueLike
 {
 	public class Creature{
-		public Coodinate pos;
+		public Coordinate pos;
 		public int Health;
 		public int Strength;
 		public int Group;

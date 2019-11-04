@@ -62,7 +62,7 @@ namespace RogueLike
 			return result;
 		}
 
-		public bool moveCreature(Creature aCreature, Coodinate aCoord){
+		public bool moveCreature(Creature aCreature, Coordinate aCoord){
 			return moveCreature(aCreature, aCoord.x, aCoord.y);
 		}
 
@@ -88,6 +88,7 @@ namespace RogueLike
 			this.CreatureGrid.SetItem(null, aCreature.pos.x, aCreature.pos.y);
 		}
 
+		//TODO: very inefficient should be rewritten in the future
 		public void ComputePlayerFOV(){
 			for(int y = 0; y < this.Height; y++){
 				for (int x = 0; x < this.Width; x++) {
@@ -140,74 +141,86 @@ namespace RogueLike
 			return InLineOfSight (aCreature, aTarget.pos.x, aTarget.pos.y);
 		}
 
-		public bool InLineOfSight(Creature aCreature, Coodinate aCoord){
+		public bool InLineOfSight(Creature aCreature, Coordinate aCoord){
 			return InLineOfSight (aCreature, aCoord.x, aCoord.y);
 		}
 
-		public bool InLineOfSight(Creature aCreature, int aX, int aY){
+
+		public bool InLineOfSight(Creature aCreature, int aX, int aY, List<Coordinate> aCoords = null){
 			bool lCanSee = true;
-			int lX1 = aCreature.pos.x;
-			int lY1 = aCreature.pos.y;
-			int lX2 = aX;
-			int lY2 = aY;
-
-			int lDeltaX = lX2 - lX1;
-			int lIX = lDeltaX > 0 ? 1 : -1;
-			lDeltaX = Math.Abs (lDeltaX) * 2;
-
-			int lDeltaY = lY2 - lY1;
-			int lIY = lDeltaY > 0 ? 1 : -1;
-			lDeltaY = Math.Abs (lDeltaY) * 2;
+			Coordinate lCoord1;
+			Coordinate lCoord2;
+			Coordinate lDelta;
+			Coordinate lI;
+			lCoord1.x = aCreature.pos.x;
+			lCoord1.y = aCreature.pos.y;
+			lCoord2.x = aX;
+			lCoord2.y = aY;
 
 
-			if (lDeltaY >= lDeltaX) {
-				int lError = lDeltaY - (lDeltaX / 2);
-				while (lX1 != lX2) {
-					if (SightBlocked (lX1, lY1)) {
+			lDelta.x = lCoord2.x - lCoord1.x;
+			lI.x = lDelta.x > 0 ? 1 : -1;
+			lDelta.x = Math.Abs (lDelta.x) * 2;
+
+			lDelta.y = lCoord2.y - lCoord1.y;
+			lI.y = lDelta.y > 0 ? 1 : -1;
+			lDelta.y = Math.Abs (lDelta.y) * 2;
+
+
+			if (lDelta.y >= lDelta.x) {
+				int lError = lDelta.y - (lDelta.x / 2);
+				while (lCoord1.x != lCoord2.x) {
+					if (SightBlocked (lCoord1.x, lCoord1.y)) {
 						lCanSee = false;
 						break;
 					}
-					if ((lError > 0) || ((lError == 0) && (lIX > 0))) {
-						lError -= lDeltaX;
-						lY1 += lIY;
+					if ((lError > 0) || ((lError == 0) && (lI.x > 0))) {
+						lError -= lDelta.x;
+						lCoord1.y += lI.y;
 					}
-					lError += lDeltaY;
-					lX1 += lIX;
+					lError += lDelta.y;
+					lCoord1.x += lI.x;
+					if (aCoords != null) {
+						aCoords.Add (lCoord1);
+					}
 				}
-				while (lY1 != lY2) {
-					if (SightBlocked (lX1, lY1)) {
+				while (lCoord1.y != lCoord2.y) {
+					if (SightBlocked (lCoord1.x, lCoord1.y)) {
 						lCanSee = false;
 						break;
 					}
-					lY1 += lIY;
+					lCoord1.y += lI.y;
 				}
 
 			} else {
-				int lError = lDeltaX - (lDeltaY / 2);
-				while (lY1 != lY2)  {
-					if (SightBlocked (lX1, lY1)) {
+				int lError = lDelta.x - (lDelta.y / 2);
+				while (lCoord1.y != lCoord2.y)  {
+					if (SightBlocked (lCoord1.x, lCoord1.y)) {
 						lCanSee = false;
 						break;
 					}
-					if ((lError > 0) || ((lError == 0) && (lIY > 0))) {
-						lError -= lDeltaY;
-						lX1 += lIX;
+					if ((lError > 0) || ((lError == 0) && (lI.y > 0))) {
+						lError -= lDelta.y;
+						lCoord1.x += lI.x;
 					}
-					lError += lDeltaX;
-					lY1 += lIY;
+					lError += lDelta.x;
+					lCoord1.y += lI.y;
+					if (aCoords != null) {
+						aCoords.Add (lCoord1);
+					}
 				}
-				while (lX1 != lX2) {
-					if (SightBlocked (lX1, lY1)) {
+				while (lCoord1.x != lCoord2.x) {
+					if (SightBlocked (lCoord1.x, lCoord1.y)) {
 						lCanSee = false;
 						break;
 					}
-					lX1 += lIX;
+					lCoord1.x += lI.x;
 				}
 			}
 
 
 			this.Debug.Print (this.Tag, "InLineOfSight: " + lCanSee.ToString () + " playerX:" + aCreature.pos.x.ToString () 
-				+ " playerY:" + aCreature.pos.y.ToString () + " lX1:" + lX1.ToString () + " lY1:" + lY1.ToString (), 20);
+				+ " playerY:" + aCreature.pos.y.ToString () + " lX1:" + lCoord1.x.ToString () + " lY1:" + lCoord1.x.ToString (), 20);
 
 			return lCanSee;
 		}
