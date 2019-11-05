@@ -13,12 +13,13 @@ namespace RogueLike
 		SouthWest,
 		Select,
 		Cancel,
+		ChangeMode,
 		NA
 	}
 
-	public class Input
+	public static class Input
 	{
-		public RogueKey getKey(ConsoleKey aKeyPress)
+		public static RogueKey getKey(ConsoleKey aKeyPress)
 		{
 			RogueKey returnKey;
 
@@ -70,11 +71,67 @@ namespace RogueLike
 			case ConsoleKey.Escape:
 				returnKey = RogueKey.Cancel;
 				break;
+			case ConsoleKey.Spacebar:
+				returnKey = RogueKey.ChangeMode;
+				break;
 			default:
 				returnKey = RogueKey.NA;
 				break;
 			}
 			return returnKey;
+		}
+
+
+		public static Coordinate DirectionKeyToCoordinate(RogueKey aKeyPress){
+			Coordinate lReturn;
+			lReturn.x = 0;
+			lReturn.y = 0;
+			switch(aKeyPress){
+			case RogueKey.SouthWest:
+				lReturn.x = -1;
+				lReturn.y = 1;
+				break;
+			case RogueKey.South:
+				lReturn.y = 1;
+				break;
+			case RogueKey.SouthEast:
+				lReturn.x = 1;
+				lReturn.y = 1;
+				break;
+			case RogueKey.West:
+				lReturn.x = -1;
+				break;
+			case RogueKey.East:
+				lReturn.x = 1;
+				break;
+			case RogueKey.NorthWest:
+				lReturn.x = -1;
+				lReturn.y = -1;
+				break;
+			case RogueKey.North:
+				lReturn.y = -1;
+				break;
+			case RogueKey.NorthEast:
+				lReturn.x = 1;
+				lReturn.y = -1;
+				break;
+			}
+			return lReturn;
+		}
+
+		public static bool IsDirectionKey(RogueKey aKeyPress){
+			bool lReturn = false;
+			if ((aKeyPress == RogueKey.SouthWest) ||
+			   (aKeyPress == RogueKey.South) ||
+			   (aKeyPress == RogueKey.SouthEast) ||
+			   (aKeyPress == RogueKey.West) ||
+			   (aKeyPress == RogueKey.East) ||
+			   (aKeyPress == RogueKey.NorthWest) ||
+			   (aKeyPress == RogueKey.North) ||
+			   (aKeyPress == RogueKey.NorthEast)) {
+				lReturn = true;
+			}
+			return lReturn;
 		}
 	}
 }

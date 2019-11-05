@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace RogueLike
 {
+	public enum GameMode{
+		Normal,
+		Interact,
+		SystemMenu,
+		CharacterMenu
+	}
 
 	public class GameLogic
 	{
@@ -14,6 +20,8 @@ namespace RogueLike
 		Random Rand;
 		int floorWidth = 69;
 		int floorHeight = 18;
+		GameMode Mode = GameMode.Normal;
+		Coordinate Selection;
 
 		public GameLogic (Display aDisplay)
 		{
@@ -26,111 +34,153 @@ namespace RogueLike
 			this.Level.ComputePlayerFOV ();
 			this.Display.printMainScreen (this.Level);
 			this.Tag = this.GetType().Name;
+			this.Selection.x = 0;
+			this.Selection.y = 0;
+
 		}
 
-		public bool GameTick(RogueKey keyPress){
+		public bool GameTick(RogueKey aKeyPress){
 			bool returnValue = true;
-			if (keyPress != RogueKey.Cancel) {
-				
-				Action tempAction = ProcessKeyPress (this.Level.Player, keyPress);
-				if (ProcessAction (this.Level.Player, tempAction)) {
-					this.Level.History.AddAction (tempAction);
+			Action lAction = new Action (ActionType.None, 0, 0);
+
+			//work out player action if any
+			switch (Mode){
+			case GameMode.Normal:
+				lAction = NormalMode (aKeyPress);
+				break;
+			case GameMode.Interact:
+				lAction = InteractMode (aKeyPress);
+				break;
+			}
+			if (lAction != null) {
+				//has player taken an action?
+				if (ProcessAction (this.Level.Player, lAction)) {
+					//log player action
+					this.Level.History.AddAction (lAction);
+
+					//work out AI actions
 					List<Creature> lCreatureList = this.Level.getCreatureList ();
 					lCreatureList.Remove (this.Level.Player);
 					if (lCreatureList != null && lCreatureList.Count > 0) {
 						foreach (Creature lCreature in lCreatureList) {
 							if (!lCreature.IsDead ()) {
-								tempAction = AICreatureAction (lCreature);
-								ProcessAction (lCreature, tempAction);
+								lAction = AICreatureAction (lCreature);
+								ProcessAction (lCreature, lAction);
 							}
-							if (this.Level.Player.IsDead()) {
+							if (this.Level.Player.IsDead ()) {
 								returnValue = false;
 								break;
 							}
 						}
 					}
-					this.Level.ComputePlayerFOV ();
+				}
+
+				// Display screen
+				this.Level.ComputePlayerFOV ();
+				switch (Mode) {
+				case GameMode.Normal:
 					this.Display.printMainScreen (this.Level);
+					break;
+				case GameMode.Interact:
+					this.Display.printMainScreen (this.Level, this.Selection);
+					break;
 				}
 			} else {
 				returnValue = false;
 			}
+
 			return returnValue;
 		}
 
-		Action ProcessKeyPress(Creature aCreature,RogueKey aKeyPress){
-			Action returnAction = new Action (ActionType.None, aCreature.pos.x, aCreature.pos.y);
+		Action NormalMode(RogueKey aKeyPress){
+			Action returnAction = new Action (ActionType.None, this.Level.Player.pos.x, this.Level.Player.pos.y);
 
 			this.Debug.Print  ( this.Tag, "KEYPRESS:" + aKeyPress.ToString (),20);
-
-			switch(aKeyPress){
-			case RogueKey.SouthWest:
-				returnAction.pos.x -= 1;
-				returnAction.pos.y += 1;
-				break;
-			case RogueKey.South:
-				returnAction.pos.y += 1;
-				break;
-			case RogueKey.SouthEast:
-				returnAction.pos.x += 1;
-				returnAction.pos.y += 1;
-				break;
-			case RogueKey.West:
-				returnAction.pos.x -= 1;
-				break;
-			case RogueKey.East:
-				returnAction.pos.x += 1;
-				break;
-			case RogueKey.NorthWest:
-				returnAction.pos.x -= 1;
-				returnAction.pos.y -= 1;
-				break;
-			case RogueKey.North:
-				returnAction.pos.y -= 1;
-				break;
-			case RogueKey.NorthEast:
-				returnAction.pos.x += 1;
-				returnAction.pos.y -= 1;
-				break;
-			}
-
-			if(this.Level.CreatureGrid.GetItem(returnAction.pos) != aCreature){
-				Creature lTarget = this.Level.CreatureGrid.GetItem (returnAction.pos);
-				if (lTarget != null) {
-					if (lTarget.Group != aCreature.Group) {
+			if (Input.IsDirectionKey (aKeyPress)) {
+				//deal with direction key press
+				returnAction.pos += Input.DirectionKeyToCoordinate (aKeyPress);					
+				if (this.Level.CreatureGrid.GetItem (returnAction.pos) != null) {
+					//If there is a creature
+					Creature lTarget = this.Level.CreatureGrid.GetItem (returnAction.pos);
+					if (lTarget.Group != this.Level.Player.Group) {
 						returnAction.Type = ActionType.Attack;
 					}
+				} else if (this.Level.ObjectGrid.GetItem (returnAction.pos) != null) {
+					//if there is an object
+					ObjectInterface lObject = this.Level.ObjectGrid.GetItem (returnAction.pos);
+					if (lObject.CanWalk ()) {
+						this.Debug.Print (this.Tag, "DOOR_MOVE", 20);
+						returnAction.Type = ActionType.Move;
+					} else {
+						this.Debug.Print (this.Tag, "DOOR_INTERACT", 20);
+						returnAction.Type = ActionType.Interact;
+					}
 				} else {
+					//else just work it out based on base grid
 					switch (this.Level.BaseGrid.GetItem (returnAction.pos)) {
-						case LevelTiles.Floor:
-						ObjectInterface lObject = this.Level.ObjectGrid.GetItem(returnAction.pos);
-						if (lObject != null) {
-							if (lObject.CanWalk ()) {
-								this.Debug.Print (this.Tag, "DOOR_MOVE", 20);
-								returnAction.Type = ActionType.Move;
-							} else {
-								this.Debug.Print (this.Tag, "DOOR_INTERACT", 20);
-								returnAction.Type = ActionType.Interact;
-							}
-						} else {
-							this.Debug.Print (this.Tag, "FLOOR_MOVE", 20);
-							returnAction.Type = ActionType.Move;
-						}
+					case LevelTiles.Floor:
+						this.Debug.Print (this.Tag, "FLOOR_MOVE", 20);
+						returnAction.Type = ActionType.Move;
 						break;
 					case LevelTiles.Ladder:
-						this.Debug.Print  ( this.Tag, "LADDER",20);
+						this.Debug.Print (this.Tag, "LADDER", 20);
 						returnAction.Type = ActionType.Move;
 						break;
 					default:
 					case LevelTiles.Wall:
-						this.Debug.Print  ( this.Tag, "WALL",20);
+						this.Debug.Print (this.Tag, "WALL", 20);
 						returnAction.Type = ActionType.None;
 						break;
 					}
 				}
+			}else {
+				switch (aKeyPress){
+				case RogueKey.ChangeMode:
+					Mode = GameMode.Interact;
+					break;
+				case RogueKey.Cancel:
+					returnAction = null;
+					break;
+				case RogueKey.Select:
+					//do nothing;
+					break;
+				}
+
 			}
 			return returnAction;
 		}
+
+		Action InteractMode(RogueKey aKeyPress){
+			Action returnAction = new Action (ActionType.None, this.Level.Player.pos.x, this.Level.Player.pos.y);
+			if (Input.IsDirectionKey (aKeyPress)) {
+				Selection = Input.DirectionKeyToCoordinate (aKeyPress);
+			} else {
+				switch (aKeyPress){
+				case RogueKey.ChangeMode:
+					Mode = GameMode.Normal;
+					Selection.x = 0;
+					Selection.y = 0;
+					break;
+				case RogueKey.Cancel:
+					returnAction = null;
+					break;
+				case RogueKey.Select:
+					if (this.Level.CreatureGrid.GetItem (this.Level.Player.pos + Selection) != null) {
+						returnAction.Type = ActionType.Attack;
+						returnAction.pos = this.Level.Player.pos + Selection;
+					} else if (this.Level.ObjectGrid.GetItem(this.Level.Player.pos + Selection) != null){
+						returnAction.Type = ActionType.Interact;
+						returnAction.pos = this.Level.Player.pos + Selection;
+					}
+					Mode = GameMode.Normal;
+					Selection.x = 0;
+					Selection.y = 0;
+					break;
+				}
+			}
+			return returnAction;
+		}
+			
 
 		private bool ProcessAction(Creature aCreature, Action aAction){
 			bool validAction = false;
@@ -165,31 +215,63 @@ namespace RogueLike
 		}
 
 		private Action AICreatureAction(Creature aCreature){
-			RogueKey lAIMove = RogueKey.NA;
+			Action returnAction = new Action (ActionType.None, aCreature.pos.x, aCreature.pos.y);
+
 			if(this.Level.InLineOfSight(aCreature,this.Level.Player)){
 				this.Debug.Print  ( this.Tag, "InLineOfSight Yes",20);
 				if (aCreature.pos.x > this.Level.Player.pos.x && aCreature.pos.y < this.Level.Player.pos.y) {
-					lAIMove = RogueKey.SouthWest;
+					returnAction.pos = aCreature.pos + Input.DirectionKeyToCoordinate(RogueKey.SouthWest);
 				} else if (aCreature.pos.x == this.Level.Player.pos.x && aCreature.pos.y < this.Level.Player.pos.y) {
-					lAIMove = RogueKey.South;
+					returnAction.pos = aCreature.pos + Input.DirectionKeyToCoordinate(RogueKey.South);
 				} else if (aCreature.pos.x < this.Level.Player.pos.x && aCreature.pos.y < this.Level.Player.pos.y) {
-					lAIMove = RogueKey.SouthEast;
+					returnAction.pos = aCreature.pos + Input.DirectionKeyToCoordinate(RogueKey.SouthEast);
 				} else if (aCreature.pos.x > this.Level.Player.pos.x && aCreature.pos.y == this.Level.Player.pos.y) {
-					lAIMove = RogueKey.West;
+					returnAction.pos = aCreature.pos + Input.DirectionKeyToCoordinate(RogueKey.West);
 				} else if (aCreature.pos.x < this.Level.Player.pos.x && aCreature.pos.y == this.Level.Player.pos.y) {
-					lAIMove = RogueKey.East;
+					returnAction.pos = aCreature.pos + Input.DirectionKeyToCoordinate(RogueKey.East);
 				} else if (aCreature.pos.x > this.Level.Player.pos.x && aCreature.pos.y > this.Level.Player.pos.y) {
-					lAIMove = RogueKey.NorthWest;
+					returnAction.pos = aCreature.pos + Input.DirectionKeyToCoordinate(RogueKey.NorthWest);
 				} else if (aCreature.pos.x == this.Level.Player.pos.x && aCreature.pos.y > this.Level.Player.pos.y) {
-					lAIMove = RogueKey.North;
+					returnAction.pos = aCreature.pos + Input.DirectionKeyToCoordinate(RogueKey.North);
 				} else if (aCreature.pos.x < this.Level.Player.pos.x && aCreature.pos.y > this.Level.Player.pos.y) {
-					lAIMove = RogueKey.NorthEast;
+					returnAction.pos = aCreature.pos + Input.DirectionKeyToCoordinate(RogueKey.NorthEast);
 				}
 			} else {
 				this.Debug.Print (this.Tag,"InLineOfSight No",20);
-				lAIMove = (RogueKey)this.Rand.Next (9);
+				returnAction.pos = aCreature.pos + Input.DirectionKeyToCoordinate((RogueKey)this.Rand.Next (9));
 			}
-			return ProcessKeyPress(aCreature, lAIMove);
+
+
+			if (this.Level.CreatureGrid.GetItem (returnAction.pos) != null) {
+				//If there is a creature
+				Creature lTarget = this.Level.CreatureGrid.GetItem (returnAction.pos);
+				if (lTarget.Group != aCreature.Group) {
+					returnAction.Type = ActionType.Attack;
+				}
+			} else if (this.Level.ObjectGrid.GetItem (returnAction.pos) != null) {
+				//if there is an object
+				ObjectInterface lObject = this.Level.ObjectGrid.GetItem (returnAction.pos);
+				if (lObject.CanWalk ()) {
+					returnAction.Type = ActionType.Move;
+				} else {
+					returnAction.Type = ActionType.Interact;
+				}
+			} else {
+				//else just work it out based on base grid
+				switch (this.Level.BaseGrid.GetItem (returnAction.pos)) {
+				case LevelTiles.Floor:
+					returnAction.Type = ActionType.Move;
+					break;
+				case LevelTiles.Ladder:
+					returnAction.Type = ActionType.Move;
+					break;
+				default:
+				case LevelTiles.Wall:
+					returnAction.Type = ActionType.None;
+					break;
+				}
+			}
+			return returnAction;
 		}
 
 	}

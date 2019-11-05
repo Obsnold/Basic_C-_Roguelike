@@ -24,9 +24,20 @@ namespace RogueLike
 
 		String title = "Rogue Like";
 		char[,] Screen;
-		char borderH = '-';
-		char borderV = '|';
-		char borderC = '+';
+		char tBorderH = '-';
+		char tBorderV = '|';
+		char tBorderC = '+';
+		char tFloor = '.';
+		char tLadder = 'L';
+		char tDoorOpen = 'd';
+		char tDoorClosed = 'D';
+		char tWall = '#';
+		char tPlayer = '@';
+		char tEnemy = 'e';
+		char tSelection = 'X';
+
+
+
 		public Display ()
 		{
 			try{
@@ -66,6 +77,14 @@ namespace RogueLike
 			updateScreen ();
 		}
 
+		public void printMainScreen(Level aLevel,Coordinate aSelection){
+			printMainScreen (aLevel);
+			printChar (tSelection, 
+				aSelection.x + aLevel.Player.Vision+this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision) ,
+				aSelection.y + aLevel.Player.Vision+this.MapPosY + ((this.MapHeight/2)-aLevel.Player.Vision));
+			updateScreen ();
+		}
+
 		public void printMap(Level aLevel){
 			char lTempChar = ' ';
 			int lY = aLevel.Player.pos.y - aLevel.Player.Vision;
@@ -81,29 +100,29 @@ namespace RogueLike
 							if (aLevel.CreatureGrid.GetItem(lTX, lTY) == null) {
 								switch (aLevel.BaseGrid.GetItem(lTX, lTY)) {
 								case LevelTiles.Floor:
-									lTempChar = '.';
+									lTempChar = tFloor;
 									break;
 								case LevelTiles.Wall:
-									lTempChar = '#';
+									lTempChar = tWall;
 									break;
 								case LevelTiles.Ladder:
-									lTempChar = 'L';
+									lTempChar = tLadder;
 									break;
 								}
 
 								if (aLevel.ObjectGrid.GetItem(lTX, lTY) != null) {
 									switch (aLevel.ObjectGrid.GetItem(lTX, lTY).GetDisplayTile()) {
 									case DisplayTile.DoorClosed:
-										lTempChar = 'D';
+										lTempChar = tDoorClosed;
 										break;
 									case DisplayTile.DoorOpen:
-										lTempChar = 'd';
+										lTempChar = tDoorOpen;
 										break;
 									}
 
 								}
 							} else {
-								lTempChar = 'e';
+								lTempChar = tEnemy;
 							}
 							printChar (lTempChar, 
 								x + this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision), 
@@ -112,8 +131,9 @@ namespace RogueLike
 					}
 				}
 			}
+
 			//print character
-			printChar ('@', 
+			printChar (tPlayer, 
 				aLevel.Player.Vision+this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision) ,
 				aLevel.Player.Vision+this.MapPosY + ((this.MapHeight/2)-aLevel.Player.Vision));
 		}
@@ -165,17 +185,17 @@ namespace RogueLike
 			int lYMax = aY + aHeight - 1;
 
 			for (int y=aY;y<lYMax;y++){
-				printChar (borderV,aX, y);
-				printChar (borderV,lXMax, y);
+				printChar (tBorderV,aX, y);
+				printChar (tBorderV,lXMax, y);
 			}
 			for (int x=aX;x<lXMax;x++){
-				printChar (borderH,x, aY);
-				printChar (borderH,x, lYMax);
+				printChar (tBorderH,x, aY);
+				printChar (tBorderH,x, lYMax);
 			}
-			printChar (borderC,aX, aY);
-			printChar (borderC,aX, lYMax);
-			printChar (borderC,lXMax, aY);
-			printChar (borderC,lXMax, lYMax);
+			printChar (tBorderC,aX, aY);
+			printChar (tBorderC,aX, lYMax);
+			printChar (tBorderC,lXMax, aY);
+			printChar (tBorderC,lXMax, lYMax);
 		}
 			
 
