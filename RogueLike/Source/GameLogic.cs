@@ -55,9 +55,6 @@ namespace RogueLike
 			if (lAction != null) {
 				//has player taken an action?
 				if (ProcessAction (this.Level.Player, lAction)) {
-					//log player action
-					this.Level.History.AddAction (lAction);
-
 					//work out AI actions
 					List<Creature> lCreatureList = this.Level.getCreatureList ();
 					lCreatureList.Remove (this.Level.Player);
@@ -142,7 +139,8 @@ namespace RogueLike
 					returnAction = null;
 					break;
 				case RogueKey.Select:
-					//do nothing;
+					//temporarily use this to use an item
+					//returnAction.Type = ActionType.
 					break;
 				}
 
@@ -171,6 +169,9 @@ namespace RogueLike
 					} else if (this.Level.ObjectGrid.GetItem(this.Level.Player.pos + Selection) != null){
 						returnAction.Type = ActionType.Interact;
 						returnAction.pos = this.Level.Player.pos + Selection;
+					} else if (this.Level.ItemGrid.GetItem(this.Level.Player.pos + Selection) != null){
+						returnAction.Type = ActionType.PickUp;
+						returnAction.pos = this.Level.Player.pos + Selection;
 					}
 					Mode = GameMode.Normal;
 					Selection.x = 0;
@@ -189,21 +190,33 @@ namespace RogueLike
 			switch(aAction.Type){
 			case ActionType.Move:
 				this.Level.moveCreature (aCreature,aAction.pos.x,aAction.pos.y);
+				this.Level.History.AddAction (aAction);
 				validAction = true;
 				break;
 			case ActionType.Interact:
 				this.Level.ObjectGrid.GetItem(aAction.pos).Interact (aCreature);
+				this.Level.History.AddAction (aAction);
 				validAction = true;
 				break;
 			case ActionType.Attack:
 				Creature lTarget = this.Level.getCreature (aAction.pos.x, aAction.pos.y);
 				if (lTarget != null) {
+					this.Level.History.AddAction (aAction,lTarget);
 					if(lTarget.TakeDamage(aCreature.Strength)){
 						this.Level.removeCreature (lTarget);
 					}
 					validAction = true;
 				} else {
 					validAction = false;
+				}
+				break;
+			case ActionType.PickUp:
+				ItemInterface lItem = this.Level.ItemGrid.GetItem (aAction.pos);
+				if (lItem != null) {
+					aCreature.Inventory.Add (lItem);
+					this.Level.History.AddAction (aAction, lItem);
+					this.Level.ItemGrid.SetItem (null, aAction.pos);
+					validAction = true;
 				}
 				break;
 			default:

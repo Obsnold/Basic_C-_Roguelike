@@ -105,7 +105,12 @@ namespace RogueLike
 				}
 			}
 			//Generate Items
-
+			for (int i = 0; i < 5; i++) {
+				room lTempRoom = this.Level.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
+				ItemInterface lItem = new Potion ();
+				this.Level.ItemGrid.SetItem (lItem, this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w),
+					this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h));
+			}
 
 
 			return true;

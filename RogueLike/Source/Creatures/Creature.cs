@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace RogueLike
+namespace RogueLike 
 {
-	public class Creature{
+	public class Creature
+	{
 		public Coordinate pos;
 		public int Health;
 		public int Strength;
 		public int Group;
 		public int Vision = 8;
 		public String Name;
+		public List<ItemInterface> Inventory;
 
 		public Creature(String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup){
 			this.Name = aName;
@@ -17,6 +20,7 @@ namespace RogueLike
 			this.Health = aHealth;
 			this.Strength = aStrength;
 			this.Group = aGroup;
+			this.Inventory = new List<ItemInterface> ();
 		}
 
 		public bool TakeDamage(int aDamage){

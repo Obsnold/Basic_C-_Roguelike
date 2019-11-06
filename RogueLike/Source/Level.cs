@@ -26,6 +26,7 @@ namespace RogueLike
 		public Grid<LevelTiles> BaseGrid;
 		public Grid<ObjectInterface> ObjectGrid;
 		public Grid<Creature> CreatureGrid;
+		public Grid<ItemInterface> ItemGrid;
 		public Grid<bool> VisibilityGrid;
 
 		public Creature Player;
@@ -43,6 +44,7 @@ namespace RogueLike
 			this.BaseGrid = new Grid<LevelTiles>(this.Width,this.Height);
 			this.ObjectGrid = new Grid<ObjectInterface>(this.Width,this.Height);
 			this.CreatureGrid = new Grid<Creature>(this.Width,this.Height);
+			this.ItemGrid = new Grid<ItemInterface>(this.Width,this.Height);
 			this.VisibilityGrid = new Grid<bool>(this.Width,this.Height);
 			this.RoomList = new List<room>();
 			this.History = new History ();
@@ -85,7 +87,7 @@ namespace RogueLike
 		}
 
 		public void removeCreature(Creature aCreature){
-			this.CreatureGrid.SetItem(null, aCreature.pos.x, aCreature.pos.y);
+			this.CreatureGrid.SetItem(null, aCreature.pos);
 		}
 
 		//TODO: very inefficient should be rewritten in the future

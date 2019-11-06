@@ -9,7 +9,8 @@ namespace RogueLike
 		DoorClosed,
 		DoorOpen,
 		Enemy,
-		Player
+		Player,
+		NA
 	}
 }
 

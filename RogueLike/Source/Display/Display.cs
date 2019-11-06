@@ -35,6 +35,7 @@ namespace RogueLike
 		char tPlayer = '@';
 		char tEnemy = 'e';
 		char tSelection = 'X';
+		char tItem = 'i';
 
 
 
@@ -97,7 +98,11 @@ namespace RogueLike
 						printChar (' ', x + this.MapPosX, y + this.MapPosY);
 					} else {
 						if (aLevel.VisibilityGrid.GetItem(lTX, lTY)) {
-							if (aLevel.CreatureGrid.GetItem(lTX, lTY) == null) {
+							if (aLevel.CreatureGrid.GetItem (lTX, lTY) != null) {
+								lTempChar = tEnemy;
+							} else if (aLevel.ItemGrid.GetItem (lTX, lTY) != null) {
+								lTempChar = tItem;
+							} else {
 								switch (aLevel.BaseGrid.GetItem(lTX, lTY)) {
 								case LevelTiles.Floor:
 									lTempChar = tFloor;
@@ -121,8 +126,6 @@ namespace RogueLike
 									}
 
 								}
-							} else {
-								lTempChar = tEnemy;
 							}
 							printChar (lTempChar, 
 								x + this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision), 
@@ -145,6 +148,12 @@ namespace RogueLike
 			printLine (aLevel.Player.Health.ToString(),this.StatWidth,this.StatPosX,this.StatPosY+5);
 			printLine ("Str:",this.StatWidth,this.StatPosX,this.StatPosY+7);
 			printLine (aLevel.Player.Strength.ToString(),this.StatWidth,this.StatPosX,this.StatPosY+8);
+
+			//print Inventory
+			printLine ("Inventory:",this.StatWidth,this.StatPosX + (this.StatWidth / 2),this.StatPosY+1);
+			for(int i = 0; i < aLevel.Player.Inventory.Count && i < this.StatWidth - 3; i++){
+				printLine (aLevel.Player.Inventory[i].GetDescription(),this.StatWidth,this.StatPosX + (this.StatWidth / 2),this.StatPosY + 2 + i);
+			}
 		}
 
 		public void printHistory(Level aLevel){

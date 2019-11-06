@@ -42,9 +42,7 @@
     <Compile Include="Source\Input.cs" />
     <Compile Include="Source\Level.cs" />
     <Compile Include="Source\Program.cs" />
-    <Compile Include="Source\Items\Items.cs" />
     <Compile Include="Source\Objects\Door.cs" />
-    <Compile Include="Source\Objects\ObjectInterface.cs" />
     <Compile Include="Source\Creatures\Creature.cs" />
     <Compile Include="Source\Menus\MainMenu.cs" />
     <Compile Include="Source\Display\Display.cs" />
@@ -52,6 +50,9 @@
     <Compile Include="Source\Grid.cs" />
     <Compile Include="Source\Coordinate.cs" />
     <Compile Include="Source\Objects\Chest.cs" />
+    <Compile Include="Source\Items\Potion.cs" />
+    <Compile Include="Source\Items\ItemInterface.cs" />
+    <Compile Include="Source\Objects\ObjectInterface.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

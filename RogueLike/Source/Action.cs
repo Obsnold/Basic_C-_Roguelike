@@ -6,6 +6,9 @@ namespace RogueLike
 		Move,
 		Attack,
 		Interact,
+		PickUp,
+		Drop,
+		Consume,
 		None
 	}
 
