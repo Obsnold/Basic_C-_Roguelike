@@ -14,7 +14,7 @@ namespace RogueLike
 			Toughness = aToughness;
 		}
 
-		public bool Interact(Creature aCreature){
+		public bool Interact(Actor aActor){
 			IsOpen = !IsOpen;
 			return true;
 		}
@@ -42,6 +42,10 @@ namespace RogueLike
 				lTile = DisplayTile.DoorOpen;
 			}
 			return lTile;
+		}
+
+		public Action DefaultAction(Level aLevel, Actor aActor){
+			return new OpenAction (aLevel,aActor, this);
 		}
 	}
 }

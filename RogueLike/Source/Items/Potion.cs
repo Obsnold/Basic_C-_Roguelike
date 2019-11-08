@@ -15,8 +15,8 @@ namespace RogueLike
 
 		}
 
-		public bool Interact(Creature aCreature){
-			aCreature.Health += this.Power;
+		public bool Interact(Actor aActor){
+			aActor.Health += this.Power;
 			return true;
 		}
 

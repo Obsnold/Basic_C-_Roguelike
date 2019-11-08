@@ -98,10 +98,10 @@ namespace RogueLike
 			//Console.SetCursorPosition (1, 45);
 			for (int i = 0; i < 5; i++) {
 				room lTempRoom = this.Level.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
-				Creature lCreature = new Creature (this.Names[this.Rand.Next(0,this.Names.Count)],this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w),
-					this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h), 4, 1, 1);
-				if (!this.Level.moveCreature (lCreature, lCreature.pos.x, lCreature.pos.y)) {
-					//debugPrint ("Cannot place Creature");
+				Actor lActor = new Enemy (this.Names[this.Rand.Next(0,this.Names.Count)],this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w),
+					this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h), 4, 1, 1, this.Level);
+				if (!this.Level.moveActor (lActor, lActor.pos.x, lActor.pos.y)) {
+					//debugPrint ("Cannot place Actor");
 				}
 			}
 			//Generate Items

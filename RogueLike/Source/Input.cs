@@ -119,6 +119,37 @@ namespace RogueLike
 			return lReturn;
 		}
 
+		public static Direction DirectionKeyToDirection(RogueKey aKeyPress){
+			Direction lReturn = Direction.NA;
+			switch(aKeyPress){
+			case RogueKey.SouthWest:
+				lReturn = Direction.SouthWest;
+				break;
+			case RogueKey.South:
+				lReturn = Direction.South;
+				break;
+			case RogueKey.SouthEast:
+				lReturn = Direction.SouthEast;
+				break;
+			case RogueKey.West:
+				lReturn = Direction.West;
+				break;
+			case RogueKey.East:
+				lReturn = Direction.East;
+				break;
+			case RogueKey.NorthWest:
+				lReturn = Direction.NorthWest;
+				break;
+			case RogueKey.North:
+				lReturn = Direction.North;
+				break;
+			case RogueKey.NorthEast:
+				lReturn = Direction.NorthEast;
+				break;
+			}
+			return lReturn;
+		}
+
 		public static bool IsDirectionKey(RogueKey aKeyPress){
 			bool lReturn = false;
 			if ((aKeyPress == RogueKey.SouthWest) ||

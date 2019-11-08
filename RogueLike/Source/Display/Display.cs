@@ -77,14 +77,7 @@ namespace RogueLike
 			printHistory (aLevel);
 			updateScreen ();
 		}
-
-		public void printMainScreen(Level aLevel,Coordinate aSelection){
-			printMainScreen (aLevel);
-			printChar (tSelection, 
-				aSelection.x + aLevel.Player.Vision+this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision) ,
-				aSelection.y + aLevel.Player.Vision+this.MapPosY + ((this.MapHeight/2)-aLevel.Player.Vision));
-			updateScreen ();
-		}
+			
 
 		public void printMap(Level aLevel){
 			char lTempChar = ' ';
@@ -98,7 +91,7 @@ namespace RogueLike
 						printChar (' ', x + this.MapPosX, y + this.MapPosY);
 					} else {
 						if (aLevel.VisibilityGrid.GetItem(lTX, lTY)) {
-							if (aLevel.CreatureGrid.GetItem (lTX, lTY) != null) {
+							if (aLevel.ActorGrid.GetItem (lTX, lTY) != null) {
 								lTempChar = tEnemy;
 							} else if (aLevel.ItemGrid.GetItem (lTX, lTY) != null) {
 								lTempChar = tItem;
@@ -134,6 +127,11 @@ namespace RogueLike
 					}
 				}
 			}
+
+			//print selection if it exists
+			printChar (tSelection, 
+				aLevel.Player.Selection.x + aLevel.Player.Vision+this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision) ,
+				aLevel.Player.Selection.y + aLevel.Player.Vision+this.MapPosY + ((this.MapHeight/2)-aLevel.Player.Vision));
 
 			//print character
 			printChar (tPlayer, 

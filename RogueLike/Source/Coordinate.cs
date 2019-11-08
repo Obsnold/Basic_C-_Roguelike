@@ -20,6 +20,46 @@ namespace RogueLike
 			return lResult;
 		}
 
+		public static Coordinate operator+ (Coordinate aA, Direction aB){
+			Coordinate lResult;
+
+			lResult.x = aA.x;
+			lResult.y = aA.y;
+
+			switch(aB){
+			case Direction.SouthWest:
+				lResult.x -= 1;
+				lResult.y += 1;
+				break;
+			case Direction.South:
+				lResult.y += 1;
+				break;
+			case Direction.SouthEast:
+				lResult.x += 1;
+				lResult.y += 1;
+				break;
+			case Direction.West:
+				lResult.x -= 1;
+				break;
+			case Direction.East:
+				lResult.x += 1;
+				break;
+			case Direction.NorthWest:
+				lResult.x -= 1;
+				lResult.y -= 1;
+				break;
+			case Direction.North:
+				lResult.y -= 1;
+				break;
+			case Direction.NorthEast:
+				lResult.x += 1;
+				lResult.y -= 1;
+				break;
+			}
+				
+			return lResult;
+		}
+
 		public static Coordinate operator- (Coordinate aA, Coordinate aB){
 			Coordinate lResult;
 			lResult.x = aA.x - aB.x;
@@ -77,12 +117,22 @@ namespace RogueLike
 
 		public override bool Equals (object obj)
 		{
-			throw new System.NotImplementedException ();
+			if (!(obj is Coordinate))
+				return false;
+
+			Coordinate mys = (Coordinate) obj;
+
+			if (this.x == mys.x &&
+			    this.y == mys.y) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		public override int GetHashCode ()
 		{
-			return base.GetHashCode ();
+			return new Tuple<int,int>(this.x, this.y).GetHashCode();
 		}
 	}
 }

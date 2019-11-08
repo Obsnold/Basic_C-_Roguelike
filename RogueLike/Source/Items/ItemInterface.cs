@@ -4,7 +4,7 @@ namespace RogueLike
 {
 	public interface ItemInterface
 	{
-		bool Interact(Creature aCreature);
+		bool Interact(Actor aActor);
 		String GetDescription();
 	}
 }

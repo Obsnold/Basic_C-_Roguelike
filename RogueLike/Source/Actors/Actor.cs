@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RogueLike 
 {
-	public class Creature
+	public class Actor
 	{
 		public Coordinate pos;
 		public int Health;
@@ -12,8 +12,9 @@ namespace RogueLike
 		public int Vision = 8;
 		public String Name;
 		public List<ItemInterface> Inventory;
+		public Level Level;
 
-		public Creature(String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup){
+		public Actor(String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup, Level aLevel){
 			this.Name = aName;
 			this.pos.x = aX;
 			this.pos.y = aY;
@@ -21,6 +22,11 @@ namespace RogueLike
 			this.Strength = aStrength;
 			this.Group = aGroup;
 			this.Inventory = new List<ItemInterface> ();
+			this.Level = aLevel;
+		}
+
+		public virtual Action TakeTurn (){
+			return null;
 		}
 
 		public bool TakeDamage(int aDamage){

@@ -34,7 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Action.cs" />
     <Compile Include="Source\Debug.cs" />
     <Compile Include="Source\GameLogic.cs" />
     <Compile Include="Source\GenerateLevel.cs" />
@@ -43,7 +42,6 @@
     <Compile Include="Source\Level.cs" />
     <Compile Include="Source\Program.cs" />
     <Compile Include="Source\Objects\Door.cs" />
-    <Compile Include="Source\Creatures\Creature.cs" />
     <Compile Include="Source\Menus\MainMenu.cs" />
     <Compile Include="Source\Display\Display.cs" />
     <Compile Include="Source\Display\DisplayTiles.cs" />
@@ -53,14 +51,28 @@
     <Compile Include="Source\Items\Potion.cs" />
     <Compile Include="Source\Items\ItemInterface.cs" />
     <Compile Include="Source\Objects\ObjectInterface.cs" />
+    <Compile Include="Source\Actions\Action.cs" />
+    <Compile Include="Source\Actors\Actor.cs" />
+    <Compile Include="Source\Actions\MoveAction.cs" />
+    <Compile Include="Source\Actions\AttackAction.cs" />
+    <Compile Include="Source\Actions\PickUpAction.cs" />
+    <Compile Include="Source\Actors\Player.cs" />
+    <Compile Include="Source\Enums\Direction.cs" />
+    <Compile Include="Source\Actions\OpenAction.cs" />
+    <Compile Include="Source\Actions\CloseAction.cs" />
+    <Compile Include="Source\Actors\Enemy.cs" />
+    <Compile Include="Source\Actions\ActionResult.cs" />
+    <Compile Include="Source\StaticRandom.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Source\" />
-    <Folder Include="Source\Creatures\" />
     <Folder Include="Source\Items\" />
     <Folder Include="Source\Objects\" />
     <Folder Include="Source\Menus\" />
     <Folder Include="Source\Display\" />
+    <Folder Include="Source\Actions\" />
+    <Folder Include="Source\Actors\" />
+    <Folder Include="Source\Enums\" />
   </ItemGroup>
 </Project>
