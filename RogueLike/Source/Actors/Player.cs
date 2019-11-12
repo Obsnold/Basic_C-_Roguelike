@@ -13,8 +13,8 @@ namespace RogueLike
 		public Coordinate Selection;
 		Display Display = Display.Instance;
 
-		public Player (String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup, Level aLevel):
-		base (aName, aX, aY, aHealth , aStrength, aGroup, aLevel)
+		public Player (String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup):
+		base (aName, aX, aY, aHealth , aStrength, aGroup)
 		{
 		}
 
@@ -44,7 +44,7 @@ namespace RogueLike
 
 			if (Input.IsDirectionKey (aKeyPress)) {
 				//deal with direction key press
-				lAction = new MoveAction(this.Level,this,Input.DirectionKeyToDirection(aKeyPress));
+				lAction = new MoveAction(this,Input.DirectionKeyToDirection(aKeyPress));
 			}else {
 				switch (aKeyPress){
 				case RogueKey.ChangeMode:
@@ -54,7 +54,7 @@ namespace RogueLike
 					break;
 				case RogueKey.Select:
 					if (this.Inventory != null && this.Inventory.Count > 0){
-						lAction = new ConsumeAction (this.Level, this, this.Inventory [0]);
+						lAction = new ConsumeAction (this, this.Inventory [0]);
 					}
 					break;
 				}
@@ -82,11 +82,11 @@ namespace RogueLike
 					break;
 				case RogueKey.Select:
 					if (this.Level.ActorGrid.GetItem (this.pos + this.Selection) != null) {
-						lAction = new AttackAction (this.Level, this, this.Level.ActorGrid.GetItem (this.pos + this.Selection));
+						lAction = new AttackAction (this, this.Level.ActorGrid.GetItem (this.pos + this.Selection));
 					} else if (this.Level.ObjectGrid.GetItem(this.pos + this.Selection) != null){
-						lAction = this.Level.ObjectGrid.GetItem (this.pos + this.Selection).DefaultAction (this.Level, this);
+						lAction = this.Level.ObjectGrid.GetItem (this.pos + this.Selection).DefaultAction (this);
 					} else if (this.Level.ItemGrid.GetItem(this.pos + this.Selection) != null){
-						lAction = new PickUpAction (this.Level, this, this.Level.ItemGrid.GetItem (this.pos + this.Selection));
+						lAction = new PickUpAction (this, this.Level.ItemGrid.GetItem (this.pos + this.Selection));
 					}
 					Mode = PlayerMode.Normal;
 					this.Selection.x = 0;

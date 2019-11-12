@@ -8,9 +8,10 @@ namespace RogueLike
 		Actor Actor;
 		Actor Target;
 
-		public AttackAction (Level aLevel,Actor aActor,Actor aTarget)
+		public AttackAction (Actor aActor,Actor aTarget)
 		{
-			this.Level = aLevel;
+			Dungeon lDungeon = Dungeon.Instance;
+			this.Level = lDungeon.GetCurrentLevel();
 			this.Actor = aActor;
 			this.Target = aTarget;
 		}

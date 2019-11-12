@@ -5,8 +5,8 @@ namespace RogueLike
 	public class Enemy : Actor
 	{
 		
-		public Enemy (String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup, Level aLevel):
-		base (aName, aX, aY, aHealth , aStrength, aGroup, aLevel)
+		public Enemy (String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup):
+		base (aName, aX, aY, aHealth , aStrength, aGroup)
 		{
 		}
 
@@ -35,7 +35,7 @@ namespace RogueLike
 				lMove = (Direction)StaticRandom.Instance.Next (9);
 			}
 				
-			return new MoveAction(this.Level,this,lMove);
+			return new MoveAction(this,lMove);
 		}
 	}
 }

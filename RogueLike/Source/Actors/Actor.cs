@@ -13,8 +13,9 @@ namespace RogueLike
 		public String Name;
 		public List<ItemInterface> Inventory;
 		public Level Level;
+		Dungeon Dungeon = Dungeon.Instance;
 
-		public Actor(String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup, Level aLevel){
+		public Actor(String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup){
 			this.Name = aName;
 			this.pos.x = aX;
 			this.pos.y = aY;
@@ -22,11 +23,25 @@ namespace RogueLike
 			this.Strength = aStrength;
 			this.Group = aGroup;
 			this.Inventory = new List<ItemInterface> ();
-			this.Level = aLevel;
+			this.Level = this.Dungeon.GetCurrentLevel();
 		}
 
 		public virtual Action TakeTurn (){
 			return null;
+		}
+
+		public bool SetPos(Coordinate aCoord){
+			this.Level = this.Dungeon.GetCurrentLevel();
+			bool result = false;
+			if(this.Level.InBounds(aCoord.x,aCoord.y) &&
+				(!this.Level.PathBlocked(aCoord.x,aCoord.y)))
+			{
+				this.Level.ActorGrid.SetItem (null, this.pos);
+				this.pos = aCoord;
+				this.Level.ActorGrid.SetItem (this, this.pos);
+				result = true;
+			}
+			return result;
 		}
 
 		public bool TakeDamage(int aDamage){

@@ -9,7 +9,7 @@ namespace RogueLike
 		bool CanWalk();
 		bool CanSeePast();
 		DisplayTile GetDisplayTile();
-		Action DefaultAction(Level aLevel, Actor aActor);
+		Action DefaultAction(Actor aActor);
 	}
 }
 

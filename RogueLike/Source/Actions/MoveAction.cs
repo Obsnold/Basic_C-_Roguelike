@@ -9,9 +9,10 @@ namespace RogueLike
 		Direction Dir;
 		Debug debug =  Debug.Instance;
 
-		public MoveAction (Level aLevel,Actor aActor, Direction aDir)
+		public MoveAction (Actor aActor, Direction aDir)
 		{
-			this.Level = aLevel;
+			Dungeon lDungeon = Dungeon.Instance;
+			this.Level = lDungeon.GetCurrentLevel();
 			this.Actor = aActor;
 			this.Dir = aDir;
 		}
@@ -23,7 +24,7 @@ namespace RogueLike
 			// check if there is anyone in the space
 			Actor lTarget = this.Level.ActorGrid.GetItem(lNewPos);
 			if (lTarget != null) {
-				lResult.Alternate (new AttackAction(this.Level,this.Actor,lTarget));
+				lResult.Alternate (new AttackAction(this.Actor,lTarget));
 				return lResult;
 			}
 
@@ -31,13 +32,13 @@ namespace RogueLike
 			ObjectInterface lObject = this.Level.ObjectGrid.GetItem(lNewPos);
 			if (lObject != null) {
 				if (!lObject.CanWalk ()) {
-					lResult.Alternate(lObject.DefaultAction (this.Level, this.Actor));
+					lResult.Alternate(lObject.DefaultAction (this.Actor));
 					return lResult;
 				}
 			}
 
 			//set new position
-			this.Level.moveActor (this.Actor, lNewPos);
+			this.Actor.SetPos(lNewPos);
 			lResult.Success ();
 			debug.Print ("MoveAction: ","Name:" + this.Actor.Name.ToString() +" pos:" + lNewPos.ToString() + " dir:" + this.Dir.ToString(),20);
 

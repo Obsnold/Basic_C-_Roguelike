@@ -8,9 +8,10 @@ namespace RogueLike
 		Actor Actor;
 		Level Level;
 
-		public PickUpAction (Level aLevel,Actor aActor, ItemInterface aItem)
+		public PickUpAction (Actor aActor, ItemInterface aItem)
 		{
-			this.Level = aLevel;
+			Dungeon lDungeon = Dungeon.Instance;
+			this.Level = lDungeon.GetCurrentLevel();
 			this.Actor = aActor;
 			this.Item = aItem;
 		}

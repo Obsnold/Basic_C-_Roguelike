@@ -40,7 +40,7 @@ namespace RogueLike
 			this.Tag = this.GetType().Name;
 			this.Width = aWidth;
 			this.Height = aHeight;
-			this.Player = new Player("Player", this.Width / 2, this.Height/2, 20 ,2,0,this);
+
 			this.BaseGrid = new Grid<LevelTiles>(this.Width,this.Height);
 			this.ObjectGrid = new Grid<ObjectInterface>(this.Width,this.Height);
 			this.ActorGrid = new Grid<Actor>(this.Width,this.Height);
@@ -48,24 +48,6 @@ namespace RogueLike
 			this.VisibilityGrid = new Grid<bool>(this.Width,this.Height);
 			this.RoomList = new List<room>();
 			this.History = new History ();
-		}
-
-		public bool moveActor(Actor aActor, int aX, int aY){
-			bool result = false;
-			if(this.InBounds(aX,aY) &&
-				(!this.PathBlocked(aX,aY)))
-			{
-				this.ActorGrid.SetItem (null, aActor.pos.x, aActor.pos.y);
-				aActor.pos.x = aX;
-				aActor.pos.y = aY;
-				this.ActorGrid.SetItem (aActor, aActor.pos.x, aActor.pos.y);
-				result = true;
-			}
-			return result;
-		}
-
-		public bool moveActor(Actor aActor, Coordinate aCoord){
-			return moveActor(aActor, aCoord.x, aCoord.y);
 		}
 
 		public List<Actor> getActorList(){

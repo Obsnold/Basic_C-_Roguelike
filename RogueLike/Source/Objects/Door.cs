@@ -44,8 +44,8 @@ namespace RogueLike
 			return lTile;
 		}
 
-		public Action DefaultAction(Level aLevel, Actor aActor){
-			return new OpenAction (aLevel,aActor, this);
+		public Action DefaultAction(Actor aActor){
+			return new OpenAction (aActor, this);
 		}
 	}
 }

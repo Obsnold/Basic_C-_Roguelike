@@ -6,11 +6,9 @@ namespace RogueLike
 	{
 		ObjectInterface Object;
 		Actor Actor;
-		Level Level;
 
-		public OpenAction (Level aLevel,Actor aActor, ObjectInterface aObject)
+		public OpenAction (Actor aActor, ObjectInterface aObject)
 		{
-			this.Level = aLevel;
 			this.Actor = aActor;
 			this.Object = aObject;
 		}

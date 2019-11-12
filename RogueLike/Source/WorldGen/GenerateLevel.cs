@@ -94,31 +94,43 @@ namespace RogueLike
 				}
 			}
 
+			return true;
+		}
+
+		public bool genActors(Level aLevel){
 			//Generate Enemys
-			//Console.SetCursorPosition (1, 45);
 			for (int i = 0; i < 5; i++) {
-				room lTempRoom = this.Level.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
+				room lTempRoom = aLevel.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
 				Actor lActor = new Enemy (this.Names[this.Rand.Next(0,this.Names.Count)],this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w),
-					this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h), 4, 1, 1, this.Level);
-				if (!this.Level.moveActor (lActor, lActor.pos.x, lActor.pos.y)) {
+					this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h), 4, 1, 1);
+				if (!lActor.SetPos(lActor.pos)) {
 					//debugPrint ("Cannot place Actor");
 				}
 			}
+
+			//place player
+			aLevel.Player = new Player("Player", this.LevelWidth / 2, this.LevelHeight/2, 20 ,2,0);
+			aLevel.Player.SetPos (aLevel.Player.pos);
+
+			return true;
+		}
+
+		public bool genItems(Level aLevel){
 			//Generate Items
 			for (int i = 0; i < 5; i++) {
-				room lTempRoom = this.Level.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
+				room lTempRoom = aLevel.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
 				ItemInterface lItem = new Potion ();
 				Coordinate lCoord;
 				lCoord.x = this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w);
 				lCoord.y = this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h);
 				lItem.SetPosition (lCoord);
-					
+
 				this.Level.ItemGrid.SetItem (lItem,lItem.GetPosition());
 			}
 
-
 			return true;
 		}
+
 
 		public Level getLevel(){
 			if (this.Level != null) {

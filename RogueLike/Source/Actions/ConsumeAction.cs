@@ -6,11 +6,9 @@ namespace RogueLike
 	{
 		ItemInterface Item;
 		Actor Actor;
-		Level Level;
 
-		public ConsumeAction (Level aLevel,Actor aActor, ItemInterface aItem)
+		public ConsumeAction (Actor aActor, ItemInterface aItem)
 		{
-			this.Level = aLevel;
 			this.Actor = aActor;
 			this.Item = aItem;
 		}
