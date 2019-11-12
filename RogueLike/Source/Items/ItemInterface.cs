@@ -6,6 +6,8 @@ namespace RogueLike
 	{
 		bool Interact(Actor aActor);
 		String GetDescription();
+		Coordinate GetPosition();
+		void SetPosition(Coordinate aCoordinate);
 	}
 }
 

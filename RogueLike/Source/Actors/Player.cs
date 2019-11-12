@@ -53,8 +53,9 @@ namespace RogueLike
 				case RogueKey.Cancel:
 					break;
 				case RogueKey.Select:
-					//temporarily use this to use an item
-					//returnAction.Type = ActionType.
+					if (this.Inventory != null && this.Inventory.Count > 0){
+						lAction = new ConsumeAction (this.Level, this, this.Inventory [0]);
+					}
 					break;
 				}
 
@@ -85,7 +86,7 @@ namespace RogueLike
 					} else if (this.Level.ObjectGrid.GetItem(this.pos + this.Selection) != null){
 						lAction = this.Level.ObjectGrid.GetItem (this.pos + this.Selection).DefaultAction (this.Level, this);
 					} else if (this.Level.ItemGrid.GetItem(this.pos + this.Selection) != null){
-						//implement later
+						lAction = new PickUpAction (this.Level, this, this.Level.ItemGrid.GetItem (this.pos + this.Selection));
 					}
 					Mode = PlayerMode.Normal;
 					this.Selection.x = 0;

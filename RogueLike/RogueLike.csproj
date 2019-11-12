@@ -63,6 +63,7 @@
     <Compile Include="Source\Actors\Enemy.cs" />
     <Compile Include="Source\Actions\ActionResult.cs" />
     <Compile Include="Source\StaticRandom.cs" />
+    <Compile Include="Source\Actions\ConsumeAction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
