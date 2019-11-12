@@ -11,6 +11,7 @@ namespace RogueLike
 	{
 		public PlayerMode Mode = PlayerMode.Normal;
 		public Coordinate Selection;
+		Display Display = Display.Instance;
 
 		public Player (String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup, Level aLevel):
 		base (aName, aX, aY, aHealth , aStrength, aGroup, aLevel)
@@ -30,6 +31,8 @@ namespace RogueLike
 					lAction = InteractMode (lKeyPressed);
 					break;
 				}
+				this.Level.ComputePlayerFOV ();
+				this.Display.printMainScreen (this.Level);
 			} while(lAction == null);
 
 			return lAction;
@@ -72,6 +75,9 @@ namespace RogueLike
 					this.Selection.y = 0;
 					break;
 				case RogueKey.Cancel:
+					Mode = PlayerMode.Normal;
+					this.Selection.x = 0;
+					this.Selection.y = 0;
 					break;
 				case RogueKey.Select:
 					if (this.Level.ActorGrid.GetItem (this.pos + this.Selection) != null) {

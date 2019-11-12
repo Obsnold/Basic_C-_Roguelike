@@ -4,6 +4,8 @@ namespace RogueLike
 {
 	public class Display
 	{
+		private static Display mDisplay;
+
 		int ScreenWidth = 80;
 		int ScreenHeight = 24;
 
@@ -37,7 +39,15 @@ namespace RogueLike
 		char tSelection = 'X';
 		char tItem = 'i';
 
-
+		public static Display Instance
+		{
+			get{
+				if (mDisplay == null) {
+					mDisplay = new Display ();
+				} 
+				return mDisplay;
+			}
+		}
 
 		public Display ()
 		{
@@ -51,6 +61,7 @@ namespace RogueLike
 				Console.WriteLine("Exception initalising display:" + ex.ToString());
 			}
 		}
+
 		public void updateScreen(){
 			for (int y = 0; y < this.ScreenHeight; y++) {
 				for (int x = 0; x < this.ScreenWidth; x++) {
@@ -128,15 +139,21 @@ namespace RogueLike
 				}
 			}
 
-			//print selection if it exists
-			printChar (tSelection, 
-				aLevel.Player.Selection.x + aLevel.Player.Vision+this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision) ,
-				aLevel.Player.Selection.y + aLevel.Player.Vision+this.MapPosY + ((this.MapHeight/2)-aLevel.Player.Vision));
+			Coordinate lPlayer;
+			lPlayer.x = aLevel.Player.Vision + this.MapPosX + ((this.MapWidth / 2) - aLevel.Player.Vision);
+			lPlayer.y = aLevel.Player.Vision + this.MapPosY + ((this.MapHeight / 2) - aLevel.Player.Vision);
 
 			//print character
 			printChar (tPlayer, 
-				aLevel.Player.Vision+this.MapPosX + ((this.MapWidth/2)-aLevel.Player.Vision) ,
-				aLevel.Player.Vision+this.MapPosY + ((this.MapHeight/2)-aLevel.Player.Vision));
+				lPlayer.x ,
+				lPlayer.y);
+
+			if (aLevel.Player.Mode == PlayerMode.Interact) {
+				//print selection if it exists
+				printChar (tSelection, 
+					aLevel.Player.Selection.x + lPlayer.x ,
+					aLevel.Player.Selection.y + lPlayer.y);
+			}
 		}
 
 		public void printStats(Level aLevel){

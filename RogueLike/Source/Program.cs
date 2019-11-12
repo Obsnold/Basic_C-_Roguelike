@@ -6,8 +6,7 @@ namespace RogueLike
 	{
 		public static void Main (string[] args)
 		{
-			Display mDisplay = new Display ();
-			GameLogic gLogic = new GameLogic (mDisplay);
+			GameLogic gLogic = new GameLogic ();
 
 			do {
 			} while(gLogic.GameTick());

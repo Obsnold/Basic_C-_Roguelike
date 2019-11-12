@@ -7,16 +7,15 @@ namespace RogueLike
 	public class GameLogic
 	{
 		LevelGenerator LevelGen;
-		Display Display;
+		Display Display = Display.Instance;
 		Level Level;
 		int floorWidth = 69;
 		int floorHeight = 18;
 		Debug debug =  Debug.Instance;
 
-		public GameLogic (Display aDisplay)
+		public GameLogic ()
 		{
 			this.LevelGen = new LevelGenerator (floorWidth,floorHeight);
-			this.Display = aDisplay;
 			this.LevelGen.genLevel ();
 			this.Level = this.LevelGen.getLevel ();
 			this.Level.moveActor (this.Level.Player,this.Level.Player.pos.x,this.Level.Player.pos.y);
