@@ -5,15 +5,17 @@ namespace RogueLike
 {
 	public class Actor
 	{
-		public Coordinate pos;
+		protected Coordinate pos;
+		protected Level level;
+		protected Dungeon dungeon = Dungeon.Instance;
+
 		public int Health;
 		public int Strength;
 		public int Group;
 		public int Vision = 8;
 		public String Name;
-		public List<ItemInterface> Inventory;
-		public Level Level;
-		Dungeon Dungeon = Dungeon.Instance;
+		public List<Item> Inventory;
+
 
 		public Actor(String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup){
 			this.Name = aName;
@@ -22,26 +24,29 @@ namespace RogueLike
 			this.Health = aHealth;
 			this.Strength = aStrength;
 			this.Group = aGroup;
-			this.Inventory = new List<ItemInterface> ();
-			this.Level = this.Dungeon.GetCurrentLevel();
+			this.Inventory = new List<Item> ();
+		}
+
+		public Coordinate GetPos(){
+			return this.pos;
+		}
+
+		public bool SetPos(Coordinate aCoord){
+			this.level = this.dungeon.GetCurrentLevel();
+			bool result = false;
+			if(this.level.InBounds(aCoord.x,aCoord.y) &&
+				(!this.level.PathBlocked(aCoord.x,aCoord.y)))
+			{
+				this.level.ActorGrid.SetItem (null, this.pos);
+				this.pos = aCoord;
+				this.level.ActorGrid.SetItem (this, this.pos);
+				result = true;
+			}
+			return result;
 		}
 
 		public virtual Action TakeTurn (){
 			return null;
-		}
-
-		public bool SetPos(Coordinate aCoord){
-			this.Level = this.Dungeon.GetCurrentLevel();
-			bool result = false;
-			if(this.Level.InBounds(aCoord.x,aCoord.y) &&
-				(!this.Level.PathBlocked(aCoord.x,aCoord.y)))
-			{
-				this.Level.ActorGrid.SetItem (null, this.pos);
-				this.pos = aCoord;
-				this.Level.ActorGrid.SetItem (this, this.pos);
-				result = true;
-			}
-			return result;
 		}
 
 		public bool TakeDamage(int aDamage){

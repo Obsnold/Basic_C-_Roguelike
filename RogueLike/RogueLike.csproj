@@ -44,11 +44,7 @@
     <Compile Include="Source\Menus\MainMenu.cs" />
     <Compile Include="Source\Display\Display.cs" />
     <Compile Include="Source\Display\DisplayTiles.cs" />
-    <Compile Include="Source\Grid.cs" />
-    <Compile Include="Source\Coordinate.cs" />
     <Compile Include="Source\Objects\Chest.cs" />
-    <Compile Include="Source\Items\Potion.cs" />
-    <Compile Include="Source\Items\ItemInterface.cs" />
     <Compile Include="Source\Objects\ObjectInterface.cs" />
     <Compile Include="Source\Actions\Action.cs" />
     <Compile Include="Source\Actors\Actor.cs" />
@@ -61,11 +57,20 @@
     <Compile Include="Source\Actions\CloseAction.cs" />
     <Compile Include="Source\Actors\Enemy.cs" />
     <Compile Include="Source\Actions\ActionResult.cs" />
-    <Compile Include="Source\StaticRandom.cs" />
     <Compile Include="Source\Actions\ConsumeAction.cs" />
     <Compile Include="Source\Dungeon.cs" />
     <Compile Include="Source\WorldGen\GenerateLevel.cs" />
     <Compile Include="Source\WorldGen\GeneratDungeon.cs" />
+    <Compile Include="Source\Items\Item.cs" />
+    <Compile Include="Source\Capabilities\Use.cs" />
+    <Compile Include="Source\Capabilities\HealUse.cs" />
+    <Compile Include="Source\Capabilities\Attack.cs" />
+    <Compile Include="Source\Capabilities\Defend.cs" />
+    <Compile Include="Source\BaseClases\Coordinate.cs" />
+    <Compile Include="Source\BaseClases\Grid.cs" />
+    <Compile Include="Source\Capabilities\StrengthUse.cs" />
+    <Compile Include="Source\Capabilities\PoisonUse.cs" />
+    <Compile Include="Source\BaseClases\StaticRandom.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -78,5 +83,7 @@
     <Folder Include="Source\Actors\" />
     <Folder Include="Source\Enums\" />
     <Folder Include="Source\WorldGen\" />
+    <Folder Include="Source\Capabilities\" />
+    <Folder Include="Source\BaseClases\" />
   </ItemGroup>
 </Project>

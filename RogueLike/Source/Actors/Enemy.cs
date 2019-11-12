@@ -12,23 +12,23 @@ namespace RogueLike
 
 		public override Action TakeTurn (){
 			Direction lMove = Direction.NA;
-
-			if(this.Level.InLineOfSight(this,this.Level.Player)){
-				if (this.pos.x > this.Level.Player.pos.x && this.pos.y < this.Level.Player.pos.y) {
+			Coordinate lPlayerPos = level.Player.GetPos ();
+			if(this.level.InLineOfSight(this,lPlayerPos)){
+				if (this.pos.x > lPlayerPos.x && this.pos.y < lPlayerPos.y) {
 					lMove = Direction.SouthWest;
-				} else if (this.pos.x == this.Level.Player.pos.x && this.pos.y < this.Level.Player.pos.y) {
+				} else if (this.pos.x == lPlayerPos.x && this.pos.y < lPlayerPos.y) {
 					lMove = Direction.South;
-				} else if (this.pos.x < this.Level.Player.pos.x && this.pos.y < this.Level.Player.pos.y) {
+				} else if (this.pos.x < lPlayerPos.x && this.pos.y < lPlayerPos.y) {
 					lMove = Direction.SouthEast;
-				} else if (this.pos.x > this.Level.Player.pos.x && this.pos.y == this.Level.Player.pos.y) {
+				} else if (this.pos.x > lPlayerPos.x && this.pos.y == lPlayerPos.y) {
 					lMove = Direction.West;
-				} else if (this.pos.x < this.Level.Player.pos.x && this.pos.y == this.Level.Player.pos.y) {
+				} else if (this.pos.x < lPlayerPos.x && this.pos.y == lPlayerPos.y) {
 					lMove = Direction.East;
-				} else if (this.pos.x > this.Level.Player.pos.x && this.pos.y > this.Level.Player.pos.y) {
+				} else if (this.pos.x > lPlayerPos.x && this.pos.y > lPlayerPos.y) {
 					lMove = Direction.NorthWest;
-				} else if (this.pos.x == this.Level.Player.pos.x && this.pos.y > this.Level.Player.pos.y) {
+				} else if (this.pos.x == lPlayerPos.x && this.pos.y > lPlayerPos.y) {
 					lMove = Direction.North;
-				} else if (this.pos.x < this.Level.Player.pos.x && this.pos.y > this.Level.Player.pos.y) {
+				} else if (this.pos.x < lPlayerPos.x && this.pos.y > lPlayerPos.y) {
 					lMove = Direction.NorthEast;
 				}
 			} else {

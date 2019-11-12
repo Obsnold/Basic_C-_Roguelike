@@ -26,10 +26,9 @@ namespace RogueLike
 				if (this.Target.TakeDamage (this.Actor.Strength)) {
 					this.Level.removeActor (this.Target);
 				}
+				this.Level.History.AddString(this.Actor.Name + " Attacks " + this.Target.Name);
 			}
-
-			this.Level.History.AddString(this.Actor.Name + " Attacks " + this.Target.Name);
-
+				
 			return lResult;
 		}
 	}

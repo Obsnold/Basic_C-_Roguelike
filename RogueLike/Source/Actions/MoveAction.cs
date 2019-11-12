@@ -19,7 +19,7 @@ namespace RogueLike
 
 		public override ActionResult Perform(){
 			ActionResult lResult = new ActionResult(false);
-			Coordinate lNewPos = this.Actor.pos + this.Dir;
+			Coordinate lNewPos = this.Actor.GetPos() + this.Dir;
 
 			// check if there is anyone in the space
 			Actor lTarget = this.Level.ActorGrid.GetItem(lNewPos);
@@ -42,9 +42,9 @@ namespace RogueLike
 			lResult.Success ();
 			debug.Print ("MoveAction: ","Name:" + this.Actor.Name.ToString() +" pos:" + lNewPos.ToString() + " dir:" + this.Dir.ToString(),20);
 
-			ItemInterface lItem = this.Level.ItemGrid.GetItem(lNewPos);
+			Item lItem = this.Level.ItemGrid.GetItem(lNewPos);
 			if (lItem != null) {
-				lResult.Success ("There is a " + lItem.GetDescription () + " on the floor here.");
+				lResult.Success ("There is a " + lItem.GetName () + " on the floor here.");
 			} else {
 				lResult.Success ();
 			}

@@ -5,13 +5,13 @@ namespace RogueLike
 {
 	public class Potion : ItemInterface
 	{
-		Coordinate pos;
-		int Power = 2;
+		Use Use;
 		String Name;
 
 		public Potion ()
 		{
-			this.Name = "Health Potion";
+			this.Use = 
+			this.Name = "Potion";
 		}
 
 		public bool Interact(Actor aActor){
@@ -19,18 +19,7 @@ namespace RogueLike
 
 			return true;
 		}
-
-		public String GetDescription(){
-			return this.Name;
-		}
-
-		public Coordinate GetPosition(){
-			return this.pos;
-		}
-
-		public void SetPosition(Coordinate aCoord){
-			this.pos = aCoord;
-		}
+			
 	}
 }
 

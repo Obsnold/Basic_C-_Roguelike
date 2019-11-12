@@ -37,7 +37,7 @@ namespace RogueLike
 
 			this.LevelGen.genActors (this.Floors [CurrentFloor]);
 			this.LevelGen.genItems (this.Floors [CurrentFloor]);
-			this.Floors[CurrentFloor].Player.SetPos(this.Floors[CurrentFloor].Player.pos);
+			this.Floors[CurrentFloor].Player.SetPos(this.Floors[CurrentFloor].Player.GetPos());
 		}
 
 		public Level GetCurrentLevel(){

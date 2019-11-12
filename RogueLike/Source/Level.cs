@@ -26,7 +26,7 @@ namespace RogueLike
 		public Grid<LevelTiles> BaseGrid;
 		public Grid<ObjectInterface> ObjectGrid;
 		public Grid<Actor> ActorGrid;
-		public Grid<ItemInterface> ItemGrid;
+		public Grid<Item> ItemGrid;
 		public Grid<bool> VisibilityGrid;
 
 		public Player Player;
@@ -44,7 +44,7 @@ namespace RogueLike
 			this.BaseGrid = new Grid<LevelTiles>(this.Width,this.Height);
 			this.ObjectGrid = new Grid<ObjectInterface>(this.Width,this.Height);
 			this.ActorGrid = new Grid<Actor>(this.Width,this.Height);
-			this.ItemGrid = new Grid<ItemInterface>(this.Width,this.Height);
+			this.ItemGrid = new Grid<Item>(this.Width,this.Height);
 			this.VisibilityGrid = new Grid<bool>(this.Width,this.Height);
 			this.RoomList = new List<room>();
 			this.History = new History ();
@@ -69,7 +69,7 @@ namespace RogueLike
 		}
 
 		public void removeActor(Actor aActor){
-			this.ActorGrid.SetItem(null, aActor.pos);
+			this.ActorGrid.SetItem(null, aActor.GetPos());
 		}
 
 		//TODO: very inefficient should be rewritten in the future
@@ -79,8 +79,8 @@ namespace RogueLike
 					this.VisibilityGrid.SetItem(false,x, y);
 				}
 			}
-			int lY = CheckY(this.Player.pos.y - this.Player.Vision);
-			int lX = CheckX(this.Player.pos.x - this.Player.Vision);
+			int lY = CheckY(this.Player.GetPos().y - this.Player.Vision);
+			int lX = CheckX(this.Player.GetPos().x - this.Player.Vision);
 
 			for (int y = lY; y < (this.Player.Vision*2)+1+lY; y++) {
 				for (int x = lX; x < (this.Player.Vision*2)+1+lX; x++) {
@@ -122,7 +122,7 @@ namespace RogueLike
 		}
 
 		public bool InLineOfSight(Actor aActor, Actor aTarget){
-			return InLineOfSight (aActor, aTarget.pos.x, aTarget.pos.y);
+			return InLineOfSight (aActor, aTarget.GetPos().x, aTarget.GetPos().y);
 		}
 
 		public bool InLineOfSight(Actor aActor, Coordinate aCoord){
@@ -136,8 +136,7 @@ namespace RogueLike
 			Coordinate lCoord2;
 			Coordinate lDelta;
 			Coordinate lI;
-			lCoord1.x = aActor.pos.x;
-			lCoord1.y = aActor.pos.y;
+			lCoord1 = aActor.GetPos();
 			lCoord2.x = aX;
 			lCoord2.y = aY;
 
@@ -203,8 +202,8 @@ namespace RogueLike
 			}
 
 
-			this.Debug.Print (this.Tag, "InLineOfSight: " + lCanSee.ToString () + " playerX:" + aActor.pos.x.ToString () 
-				+ " playerY:" + aActor.pos.y.ToString () + " lX1:" + lCoord1.x.ToString () + " lY1:" + lCoord1.x.ToString (), 20);
+			this.Debug.Print (this.Tag, "InLineOfSight: " + lCanSee.ToString () + " playerX:" + aActor.GetPos().x.ToString () 
+				+ " playerY:" + aActor.GetPos().y.ToString () + " lX1:" + lCoord1.x.ToString () + " lY1:" + lCoord1.x.ToString (), 20);
 
 			return lCanSee;
 		}

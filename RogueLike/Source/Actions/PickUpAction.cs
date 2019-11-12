@@ -4,11 +4,11 @@ namespace RogueLike
 {
 	public class PickUpAction : Action
 	{
-		ItemInterface Item;
+		Item Item;
 		Actor Actor;
 		Level Level;
 
-		public PickUpAction (Actor aActor, ItemInterface aItem)
+		public PickUpAction (Actor aActor, Item aItem)
 		{
 			Dungeon lDungeon = Dungeon.Instance;
 			this.Level = lDungeon.GetCurrentLevel();
@@ -19,7 +19,7 @@ namespace RogueLike
 		public override ActionResult Perform (){
 			ActionResult lResult = new ActionResult(true);
 			this.Actor.Inventory.Add (this.Item);
-			this.Level.ItemGrid.SetItem (null, this.Item.GetPosition ());
+			this.Level.ItemGrid.SetItem (null, this.Item.GetPos ());
 			return lResult;
 		}
 	}

@@ -92,8 +92,8 @@ namespace RogueLike
 
 		public void printMap(Level aLevel){
 			char lTempChar = ' ';
-			int lY = aLevel.Player.pos.y - aLevel.Player.Vision;
-			int lX = aLevel.Player.pos.x - aLevel.Player.Vision;
+			int lY = aLevel.Player.GetPos().y - aLevel.Player.Vision;
+			int lX = aLevel.Player.GetPos().x - aLevel.Player.Vision;
 			for (int y = 0; y < (aLevel.Player.Vision * 2) + 1; y++){
 				int lTY = lY + y;
 				for (int x = 0; x < (aLevel.Player.Vision * 2) + 1; x++){
@@ -167,7 +167,7 @@ namespace RogueLike
 			//print Inventory
 			printLine ("Inventory:",this.StatWidth,this.StatPosX + (this.StatWidth / 2),this.StatPosY+1);
 			for(int i = 0; i < aLevel.Player.Inventory.Count && i < this.StatWidth - 3; i++){
-				printLine (aLevel.Player.Inventory[i].GetDescription(),this.StatWidth,this.StatPosX + (this.StatWidth / 2),this.StatPosY + 2 + i);
+				printLine (aLevel.Player.Inventory[i].GetName(),this.StatWidth,this.StatPosX + (this.StatWidth / 2),this.StatPosY + 2 + i);
 			}
 		}
 

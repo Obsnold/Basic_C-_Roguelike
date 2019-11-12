@@ -103,14 +103,14 @@ namespace RogueLike
 				room lTempRoom = aLevel.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
 				Actor lActor = new Enemy (this.Names[this.Rand.Next(0,this.Names.Count)],this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w),
 					this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h), 4, 1, 1);
-				if (!lActor.SetPos(lActor.pos)) {
+				if (!lActor.SetPos(lActor.GetPos())) {
 					//debugPrint ("Cannot place Actor");
 				}
 			}
 
 			//place player
 			aLevel.Player = new Player("Player", this.LevelWidth / 2, this.LevelHeight/2, 20 ,2,0);
-			aLevel.Player.SetPos (aLevel.Player.pos);
+			aLevel.Player.SetPos (aLevel.Player.GetPos());
 
 			return true;
 		}
@@ -119,13 +119,22 @@ namespace RogueLike
 			//Generate Items
 			for (int i = 0; i < 5; i++) {
 				room lTempRoom = aLevel.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
-				ItemInterface lItem = new Potion ();
+
+				int lPotionType = this.Rand.Next (0, 100);
+				Item lItem;
+				if (lPotionType < 33) {
+					lItem = new Item ("Poison", aUse: new PoisonUse ());
+				} else if ( lPotionType < 66){
+					lItem = new Item ("Health Potion", aUse: new HealUse ());
+				} else {
+					lItem = new Item ("Str Potion", aUse: new StrengthUse ());
+				}
 				Coordinate lCoord;
 				lCoord.x = this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w);
 				lCoord.y = this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h);
-				lItem.SetPosition (lCoord);
+				lItem.SetPos (lCoord);
 
-				this.Level.ItemGrid.SetItem (lItem,lItem.GetPosition());
+				//this.Level.ItemGrid.SetItem (lItem,lItem.GetPos());
 			}
 
 			return true;

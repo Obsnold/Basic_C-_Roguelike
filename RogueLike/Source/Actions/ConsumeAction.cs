@@ -4,10 +4,10 @@ namespace RogueLike
 {
 	public class ConsumeAction : Action
 	{
-		ItemInterface Item;
+		Item Item;
 		Actor Actor;
 
-		public ConsumeAction (Actor aActor, ItemInterface aItem)
+		public ConsumeAction (Actor aActor, Item aItem)
 		{
 			this.Actor = aActor;
 			this.Item = aItem;
@@ -15,7 +15,7 @@ namespace RogueLike
 
 		public override ActionResult Perform (){
 			ActionResult lResult = new ActionResult(true);
-			this.Item.Interact (this.Actor);
+			this.Item.use.use(this.Actor);
 			this.Actor.Inventory.Remove (this.Item);
 			return lResult;
 		}

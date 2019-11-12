@@ -31,8 +31,8 @@ namespace RogueLike
 					lAction = InteractMode (lKeyPressed);
 					break;
 				}
-				this.Level.ComputePlayerFOV ();
-				this.Display.printMainScreen (this.Level);
+				base.level.ComputePlayerFOV ();
+				this.Display.printMainScreen (base.level);
 			} while(lAction == null);
 
 			return lAction;
@@ -81,12 +81,12 @@ namespace RogueLike
 					this.Selection.y = 0;
 					break;
 				case RogueKey.Select:
-					if (this.Level.ActorGrid.GetItem (this.pos + this.Selection) != null) {
-						lAction = new AttackAction (this, this.Level.ActorGrid.GetItem (this.pos + this.Selection));
-					} else if (this.Level.ObjectGrid.GetItem(this.pos + this.Selection) != null){
-						lAction = this.Level.ObjectGrid.GetItem (this.pos + this.Selection).DefaultAction (this);
-					} else if (this.Level.ItemGrid.GetItem(this.pos + this.Selection) != null){
-						lAction = new PickUpAction (this, this.Level.ItemGrid.GetItem (this.pos + this.Selection));
+					if (this.level.ActorGrid.GetItem (this.pos + this.Selection) != null) {
+						lAction = new AttackAction (this, this.level.ActorGrid.GetItem (this.pos + this.Selection));
+					} else if (this.level.ObjectGrid.GetItem(this.pos + this.Selection) != null){
+						lAction = this.level.ObjectGrid.GetItem (this.pos + this.Selection).DefaultAction (this);
+					} else if (this.level.ItemGrid.GetItem(this.pos + this.Selection) != null){
+						lAction = new PickUpAction (this, this.level.ItemGrid.GetItem (this.pos + this.Selection));
 					}
 					Mode = PlayerMode.Normal;
 					this.Selection.x = 0;
