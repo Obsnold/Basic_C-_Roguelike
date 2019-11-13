@@ -162,7 +162,7 @@ namespace RogueLike
 			printLine ("Health:",this.StatWidth,this.StatPosX,this.StatPosY+4);
 			printLine (aLevel.Player.Health.ToString(),this.StatWidth,this.StatPosX,this.StatPosY+5);
 			printLine ("Str:",this.StatWidth,this.StatPosX,this.StatPosY+7);
-			printLine (aLevel.Player.Strength.ToString(),this.StatWidth,this.StatPosX,this.StatPosY+8);
+			printLine (aLevel.Player.Stats.Str.ToString(),this.StatWidth,this.StatPosX,this.StatPosY+8);
 
 			//print Inventory
 			printLine ("Inventory:",this.StatWidth,this.StatPosX + (this.StatWidth / 2),this.StatPosY+1);

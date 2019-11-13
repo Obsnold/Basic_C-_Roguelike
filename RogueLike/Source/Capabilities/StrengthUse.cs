@@ -11,7 +11,7 @@ namespace RogueLike
 		}
 
 		public bool use(Actor aActor){
-			aActor.Strength += this.Strength;
+			aActor.Stats.Str += this.Strength;
 			return true;
 		}
 	}

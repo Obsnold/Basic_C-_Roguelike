@@ -23,10 +23,12 @@ namespace RogueLike
 				lResult.Failure ();
 			} else {
 				lResult.Success ();
-				if (this.Target.TakeDamage (this.Actor.Strength)) {
+				if (this.Target.TakeDamage (this.Actor.Stats.Str)) {
 					this.Level.removeActor (this.Target);
+					this.Level.History.AddString (this.Target.Name + " the " + this.Target.Stats.Name + " is dead.");
+				} else {
+					this.Level.History.AddString (this.Target.Name + " the " + this.Target.Stats.Name + " is hurt.");
 				}
-				this.Level.History.AddString(this.Actor.Name + " Attacks " + this.Target.Name);
 			}
 				
 			return lResult;

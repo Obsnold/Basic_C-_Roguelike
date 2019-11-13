@@ -7,6 +7,7 @@ namespace RogueLike
 	{
 		static Dungeon mDungeon;
 		LevelGenerator LevelGen;
+		ActorGenerator ActorGen;
 		List<Level> Floors;
 		int FloorWidth = 69;
 		int FloorHeight = 18;
@@ -31,11 +32,12 @@ namespace RogueLike
 
 		public void Initialise(){
 			this.LevelGen = new LevelGenerator (FloorWidth,FloorHeight);
+			this.ActorGen = new ActorGenerator ();
 			this.LevelGen.genLevel ();
 			this.Floors = new List<Level>();
 			this.Floors.Add(this.LevelGen.getLevel ());
 
-			this.LevelGen.genActors (this.Floors [CurrentFloor]);
+			this.ActorGen.PopulateLevel (this.Floors [CurrentFloor]);
 			this.LevelGen.genItems (this.Floors [CurrentFloor]);
 			this.Floors[CurrentFloor].Player.SetPos(this.Floors[CurrentFloor].Player.GetPos());
 		}

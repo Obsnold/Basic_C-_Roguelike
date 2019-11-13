@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ActorTemplate>
+	<Name>HobGob</Name>
+	<Level>2</Level>
+	<MaxHealth>5</MaxHealth>
+	<Str>2</Str>
+	<Dex>1</Dex>
+	<Int>1</Int>
+	<Item>Potion</Item>
+	<Tag>Goblin</Tag>
+</ActorTemplate>

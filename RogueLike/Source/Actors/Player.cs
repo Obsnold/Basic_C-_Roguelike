@@ -13,8 +13,8 @@ namespace RogueLike
 		public Coordinate Selection;
 		Display Display = Display.Instance;
 
-		public Player (String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup):
-		base (aName, aX, aY, aHealth , aStrength, aGroup)
+		public Player (String aName, ActorTemplate aTemplate, int aX, int aY, int aGroup):
+		base (aName, aTemplate, aX, aY, aGroup)
 		{
 		}
 

@@ -5,8 +5,8 @@ namespace RogueLike
 	public class Enemy : Actor
 	{
 		
-		public Enemy (String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup):
-		base (aName, aX, aY, aHealth , aStrength, aGroup)
+		public Enemy (String aName, ActorTemplate aTemplate, int aX, int aY, int aGroup):
+		base (aName, aTemplate, aX, aY, aGroup)
 		{
 		}
 

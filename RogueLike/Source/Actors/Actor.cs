@@ -9,22 +9,22 @@ namespace RogueLike
 		protected Level level;
 		protected Dungeon dungeon = Dungeon.Instance;
 
-		public int Health;
-		public int Strength;
-		public int Group;
-		public int Vision = 8;
+		public ActorTemplate Stats;
 		public String Name;
 		public List<Item> Inventory;
+		public int Health;
+		public int Group;
+		public int Vision = 8;
 
 
-		public Actor(String aName, int aX, int aY, int aHealth ,int aStrength, int aGroup){
+		public Actor(String aName, ActorTemplate aTemplate, int aX, int aY, int aGroup){
 			this.Name = aName;
+			this.Stats = aTemplate;
+			this.Inventory = new List<Item> ();
+			this.Group = aGroup;
 			this.pos.x = aX;
 			this.pos.y = aY;
-			this.Health = aHealth;
-			this.Strength = aStrength;
-			this.Group = aGroup;
-			this.Inventory = new List<Item> ();
+			this.Health = this.Stats.MaxHealth;
 		}
 
 		public Coordinate GetPos(){

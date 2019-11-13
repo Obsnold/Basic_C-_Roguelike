@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Debug.cs" />
     <Compile Include="Source\GameLogic.cs" />
     <Compile Include="Source\History.cs" />
     <Compile Include="Source\Input.cs" />
@@ -60,7 +60,6 @@
     <Compile Include="Source\Actions\ConsumeAction.cs" />
     <Compile Include="Source\Dungeon.cs" />
     <Compile Include="Source\WorldGen\GenerateLevel.cs" />
-    <Compile Include="Source\WorldGen\GeneratDungeon.cs" />
     <Compile Include="Source\Items\Item.cs" />
     <Compile Include="Source\Capabilities\Use.cs" />
     <Compile Include="Source\Capabilities\HealUse.cs" />
@@ -71,6 +70,10 @@
     <Compile Include="Source\Capabilities\StrengthUse.cs" />
     <Compile Include="Source\Capabilities\PoisonUse.cs" />
     <Compile Include="Source\BaseClases\StaticRandom.cs" />
+    <Compile Include="Source\BaseClases\Debug.cs" />
+    <Compile Include="Source\Actors\ActorTemplate.cs" />
+    <Compile Include="Source\WorldGen\GenerateActor.cs" />
+    <Compile Include="Source\WorldGen\GenerateDungeon.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -85,5 +88,17 @@
     <Folder Include="Source\WorldGen\" />
     <Folder Include="Source\Capabilities\" />
     <Folder Include="Source\BaseClases\" />
+    <Folder Include="Data\" />
+    <Folder Include="Data\Enemies\" />
+    <Folder Include="Data\Player\" />
+    <Folder Include="Data\Enemies\Names\" />
+    <Folder Include="Data\Enemies\Template\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Player\Player.xml" />
+    <None Include="Data\Enemies\Template\Goblin.xml" />
+    <None Include="Data\Enemies\Names\GoblinNames.xml" />
+    <None Include="Data\Enemies\Template\HobGoblin.xml" />
+    <None Include="Data\Enemies\Template\Zombie.xml" />
   </ItemGroup>
 </Project>

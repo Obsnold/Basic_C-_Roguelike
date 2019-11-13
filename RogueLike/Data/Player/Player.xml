@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ActorTemplate>
+	<Name>Player</Name>
+	<Level>1</Level>
+	<MaxHealth>10</MaxHealth>
+	<Str>2</Str>
+	<Dex>2</Dex>
+	<Int>2</Int>
+	<Tag>Player</Tag>
+	<Tag>Human</Tag>
+</ActorTemplate>

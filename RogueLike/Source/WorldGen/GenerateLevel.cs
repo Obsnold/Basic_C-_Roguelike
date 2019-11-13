@@ -12,7 +12,6 @@ namespace RogueLike
 		int LevelWidth = 40;
 		int LevelHeight = 40;
 		List<string> Names;
-		Random Rand;
 		Level Level;
 
 		public LevelGenerator (int aWidth, int aHeight)
@@ -20,7 +19,6 @@ namespace RogueLike
 			this.LevelHeight = aHeight;
 			this.LevelWidth = aWidth;
 			Level = new Level(aWidth,aHeight);
-			this.Rand = new Random ();
 			this.Names = new List<string> ();
 			this.Names.Add ("Barry");
 			this.Names.Add ("Harold");
@@ -51,41 +49,41 @@ namespace RogueLike
 			//Generate Rooms
 
 			for (int i = 0;i < 100;i ++) {
-				int roomNum = this.Rand.Next (0, this.Level.RoomList.Count);
+				int roomNum = StaticRandom.Instance.Next (0, this.Level.RoomList.Count);
 
-				tempRoom.h = this.Rand.Next (this.MinRoomSize, this.MaxRoomSize);
-				tempRoom.w = this.Rand.Next (this.MinRoomSize, this.MaxRoomSize);
+				tempRoom.h = StaticRandom.Instance.Next (this.MinRoomSize, this.MaxRoomSize);
+				tempRoom.w = StaticRandom.Instance.Next (this.MinRoomSize, this.MaxRoomSize);
 
 				int tempX = 0;
 				int tempY = 0;
-				switch(this.Rand.Next(0,4)){
+				switch(StaticRandom.Instance.Next(0,4)){
 				case 0://north
 					//debugPrint ("North-------------------");
-					tempX = this.Rand.Next(this.Level.RoomList [roomNum].x,this.Level.RoomList [roomNum].x+this.Level.RoomList [roomNum].w);
+					tempX = StaticRandom.Instance.Next(this.Level.RoomList [roomNum].x,this.Level.RoomList [roomNum].x+this.Level.RoomList [roomNum].w);
 					tempY = this.Level.RoomList [roomNum].y - 1;
-					tempRoom.x = tempX - this.Rand.Next(0,tempRoom.w);
+					tempRoom.x = tempX - StaticRandom.Instance.Next(0,tempRoom.w);
 					tempRoom.y = tempY - tempRoom.h;
 					break;
 				case 1://south
 					//debugPrint ("South-----------------");
-					tempX = this.Rand.Next(this.Level.RoomList [roomNum].x,this.Level.RoomList [roomNum].x+this.Level.RoomList [roomNum].w);
+					tempX = StaticRandom.Instance.Next(this.Level.RoomList [roomNum].x,this.Level.RoomList [roomNum].x+this.Level.RoomList [roomNum].w);
 					tempY = this.Level.RoomList [roomNum].y + this.Level.RoomList [roomNum].h;
-					tempRoom.x = tempX - this.Rand.Next(0,tempRoom.w);
+					tempRoom.x = tempX - StaticRandom.Instance.Next(0,tempRoom.w);
 					tempRoom.y = tempY + 1;
 					break;
 				case 2://east
 					//debugPrint ("East-------------------");
 					tempX = this.Level.RoomList [roomNum].x + this.Level.RoomList [roomNum].w;
-					tempY = this.Rand.Next(this.Level.RoomList [roomNum].y,this.Level.RoomList [roomNum].y+this.Level.RoomList [roomNum].h);
+					tempY = StaticRandom.Instance.Next(this.Level.RoomList [roomNum].y,this.Level.RoomList [roomNum].y+this.Level.RoomList [roomNum].h);
 					tempRoom.x = tempX + 1;
-					tempRoom.y = tempY - this.Rand.Next(0,tempRoom.h);
+					tempRoom.y = tempY - StaticRandom.Instance.Next(0,tempRoom.h);
 					break;
 				case 3://west
 					//debugPrint ("West--------------------");
 					tempX = this.Level.RoomList [roomNum].x - 1;
-					tempY = this.Rand.Next(this.Level.RoomList [roomNum].y,this.Level.RoomList [roomNum].y+this.Level.RoomList [roomNum].h);
+					tempY = StaticRandom.Instance.Next(this.Level.RoomList [roomNum].y,this.Level.RoomList [roomNum].y+this.Level.RoomList [roomNum].h);
 					tempRoom.x = tempX - tempRoom.w;
-					tempRoom.y = tempY - this.Rand.Next(0,tempRoom.h);
+					tempRoom.y = tempY - StaticRandom.Instance.Next(0,tempRoom.h);
 					break;
 				}
 				if (placeRoom (tempRoom)) {
@@ -97,12 +95,12 @@ namespace RogueLike
 			return true;
 		}
 
-		public bool genActors(Level aLevel){
-			//Generate Enemys
+	/*	public bool genActors(Level aLevel){
+		//Generate Enemys
 			for (int i = 0; i < 5; i++) {
-				room lTempRoom = aLevel.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
-				Actor lActor = new Enemy (this.Names[this.Rand.Next(0,this.Names.Count)],this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w),
-					this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h), 4, 1, 1);
+				room lTempRoom = aLevel.RoomList[StaticRandom.Instance.Next(1,this.Level.RoomList.Count)];
+				Actor lActor = new Enemy (this.Names[StaticRandom.Instance.Next(0,this.Names.Count)],StaticRandom.Instance.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w),
+					StaticRandom.Instance.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h), 4, 1, 1);
 				if (!lActor.SetPos(lActor.GetPos())) {
 					//debugPrint ("Cannot place Actor");
 				}
@@ -113,14 +111,14 @@ namespace RogueLike
 			aLevel.Player.SetPos (aLevel.Player.GetPos());
 
 			return true;
-		}
+		}*/
 
 		public bool genItems(Level aLevel){
 			//Generate Items
 			for (int i = 0; i < 5; i++) {
-				room lTempRoom = aLevel.RoomList[this.Rand.Next(1,this.Level.RoomList.Count)];
+				room lTempRoom = aLevel.RoomList[StaticRandom.Instance.Next(1,this.Level.RoomList.Count)];
 
-				int lPotionType = this.Rand.Next (0, 100);
+				int lPotionType = StaticRandom.Instance.Next (0, 100);
 				Item lItem;
 				if (lPotionType < 33) {
 					lItem = new Item ("Poison", aUse: new PoisonUse ());
@@ -130,8 +128,8 @@ namespace RogueLike
 					lItem = new Item ("Str Potion", aUse: new StrengthUse ());
 				}
 				Coordinate lCoord;
-				lCoord.x = this.Rand.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w);
-				lCoord.y = this.Rand.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h);
+				lCoord.x = StaticRandom.Instance.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w);
+				lCoord.y = StaticRandom.Instance.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h);
 				lItem.SetPos (lCoord);
 
 				//this.Level.ItemGrid.SetItem (lItem,lItem.GetPos());

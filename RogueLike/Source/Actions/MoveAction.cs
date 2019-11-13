@@ -40,7 +40,7 @@ namespace RogueLike
 			//set new position
 			this.Actor.SetPos(lNewPos);
 			lResult.Success ();
-			debug.Print ("MoveAction: ","Name:" + this.Actor.Name.ToString() +" pos:" + lNewPos.ToString() + " dir:" + this.Dir.ToString(),20);
+			debug.Print ("MoveAction: ","Name:" + this.Actor.Stats.Name.ToString() +" pos:" + lNewPos.ToString() + " dir:" + this.Dir.ToString(),20);
 
 			Item lItem = this.Level.ItemGrid.GetItem(lNewPos);
 			if (lItem != null) {
