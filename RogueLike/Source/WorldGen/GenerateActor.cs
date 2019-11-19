@@ -104,7 +104,7 @@ namespace RogueLike
 				break;
 			case "Tag":
 				if (aNode.Value != null) {
-					aTemplate.Tags.Add (aNode.Value, aNode.InnerText);
+					aTemplate.Tags.AddTag(aNode.InnerText);
 				}
 				break;
 			default:

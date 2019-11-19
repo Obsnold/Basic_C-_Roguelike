@@ -74,6 +74,8 @@
     <Compile Include="Source\Actors\ActorTemplate.cs" />
     <Compile Include="Source\WorldGen\GenerateActor.cs" />
     <Compile Include="Source\WorldGen\GenerateDungeon.cs" />
+    <Compile Include="Source\Actors\ActorBodyPart.cs" />
+    <Compile Include="Source\BaseClases\Tags.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -93,6 +95,7 @@
     <Folder Include="Data\Player\" />
     <Folder Include="Data\Enemies\Names\" />
     <Folder Include="Data\Enemies\Template\" />
+    <Folder Include="Data\Items\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Player\Player.xml" />
@@ -100,5 +103,6 @@
     <None Include="Data\Enemies\Names\GoblinNames.xml" />
     <None Include="Data\Enemies\Template\HobGoblin.xml" />
     <None Include="Data\Enemies\Template\Zombie.xml" />
+    <None Include="Data\Items\Sword.xml" />
   </ItemGroup>
 </Project>

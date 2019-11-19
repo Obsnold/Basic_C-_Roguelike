@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RogueLike
 {
@@ -9,16 +10,20 @@ namespace RogueLike
 		Dungeon dungeon = Dungeon.Instance;
 
 		String name;
+		public Tags Tags;
+		public String EquipTo;
 
 		public Attack attack;
 		public Defend defend;
 		public Use use;
 
-		public Item(String aName, Attack aAttack = null, Defend aDefend = null, Use aUse = null){
+		public Item(String aName, Attack aAttack = null, Defend aDefend = null, Use aUse = null, String aEquipTo = null){
 			this.name = aName;
 			this.attack = aAttack;
 			this.defend = aDefend;
 			this.use = aUse;
+			this.Tags = new Tags ();
+			EquipTo = aEquipTo;
 		}
 
 		public Coordinate GetPos(){

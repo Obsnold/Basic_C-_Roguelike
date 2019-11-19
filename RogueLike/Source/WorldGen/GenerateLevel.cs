@@ -114,12 +114,13 @@ namespace RogueLike
 		}*/
 
 		public bool genItems(Level aLevel){
+			Item lItem;
+			Coordinate lCoord;
 			//Generate Items
 			for (int i = 0; i < 5; i++) {
 				room lTempRoom = aLevel.RoomList[StaticRandom.Instance.Next(1,this.Level.RoomList.Count)];
 
 				int lPotionType = StaticRandom.Instance.Next (0, 100);
-				Item lItem;
 				if (lPotionType < 33) {
 					lItem = new Item ("Poison", aUse: new PoisonUse ());
 				} else if ( lPotionType < 66){
@@ -127,14 +128,31 @@ namespace RogueLike
 				} else {
 					lItem = new Item ("Str Potion", aUse: new StrengthUse ());
 				}
-				Coordinate lCoord;
+
 				lCoord.x = StaticRandom.Instance.Next (lTempRoom.x, lTempRoom.x + lTempRoom.w);
 				lCoord.y = StaticRandom.Instance.Next (lTempRoom.y, lTempRoom.y + lTempRoom.h);
 				lItem.SetPos (lCoord);
-
 				//this.Level.ItemGrid.SetItem (lItem,lItem.GetPos());
 			}
 
+			lCoord.x = this.LevelWidth / 2;
+			lCoord.y = this.LevelHeight/2;
+			//create starting items
+			lItem = new Item("Sword", aAttack : new Attack(2,4), aEquipTo:"RightHand");
+			lCoord.x += 1;
+			lItem.SetPos (lCoord);
+			lItem = new Item("Sheild", aDefend : new Defend(2), aEquipTo:"LeftHand");
+			lCoord.x -= 2;
+			lItem.SetPos (lCoord);
+			lItem = new Item("Helmet", aDefend : new Defend(2), aEquipTo:"Head");
+			lCoord.y -= 1;
+			lItem.SetPos (lCoord);
+			lItem = new Item("Chain Mail", aDefend : new Defend(2), aEquipTo:"Torso");
+			lCoord.y += 2;
+			lItem.SetPos (lCoord);
+			lItem = new Item("Boots", aDefend : new Defend(2), aEquipTo:"Legs");
+			lCoord.x += 2;
+			lItem.SetPos (lCoord);
 			return true;
 		}
 

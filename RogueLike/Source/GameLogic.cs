@@ -37,8 +37,7 @@ namespace RogueLike
 							}
 							lAction = lResult.AlternateAction;
 						}
-						this.Level.ComputePlayerFOV ();
-						this.Display.printMainScreen (this.Level);
+						Display.printScreen (this.Level, this.Level.Player.Mode);
 					}
 					if (this.Level.Player.IsDead ()) {
 						returnValue = false;

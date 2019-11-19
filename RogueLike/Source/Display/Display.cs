@@ -78,6 +78,15 @@ namespace RogueLike
 			updateScreen ();
 		}
 
+		public void printScreen(Level aLevel, PlayerMode aMode){
+			if (aMode != PlayerMode.Inventory) {
+				aLevel.ComputePlayerFOV ();
+				this.printMainScreen (aLevel);
+			} else {
+				this.printInventory (aLevel);
+			}
+		}
+
 		public void printMainScreen(Level aLevel){
 			clearArea (0, 0, this.ScreenWidth, this.ScreenWidth);
 			printBorder (0, 0, this.ScreenWidth, this.ScreenHeight); // main border
@@ -89,6 +98,52 @@ namespace RogueLike
 			updateScreen ();
 		}
 			
+		public void printInventory(Level aLevel){
+			clearArea (0, 0, this.ScreenWidth, this.ScreenWidth);
+			printBorder (0, 0, this.ScreenWidth, this.ScreenHeight); // main border
+			printBorder (this.HistPosX -1 , this.HistPosY -1, this.HistWidth + 2, this.HistHeight+2); // history
+			printBorder (this.StatPosX -1, this.StatPosY -1, this.StatWidth +2, this.StatHeight+2); //stats
+			printLine ("Inventory:",this.MapWidth,this.MapPosX+1 ,this.MapPosY+1);
+
+			//print inventory
+			for(int i = 0; i < aLevel.Player.Inventory.Count && i < this.MapWidth - 3; i++){
+				printLine (aLevel.Player.Inventory[i].GetName(),this.MapWidth,this.MapPosX+1 ,this.MapPosY + 2 + i);
+				if (i == aLevel.Player.InvSelection) {
+					printChar ('*', this.MapPosX, this.MapPosY + 2 + i);
+				}
+			}
+
+			//print equiped items
+			printLine ("Head:",(this.MapWidth/2),this.MapPosX+(this.MapWidth/2) ,this.MapPosY + 2);
+			if(aLevel.Player.Body["Head"].Equiped != null){
+				printLine (aLevel.Player.Body["Head"].Equiped.GetName (), (this.MapWidth / 2), 
+					this.MapPosX + (this.MapWidth / 2) + 3, this.MapPosY + 3);
+			}
+			printLine ("Torso:",(this.MapWidth/2),this.MapPosX+(this.MapWidth/2) ,this.MapPosY + 4);
+			if(aLevel.Player.Body["Torso"].Equiped != null){
+				printLine (aLevel.Player.Body["Torso"].Equiped.GetName (), (this.MapWidth / 2), 
+					this.MapPosX + (this.MapWidth / 2) + 3, this.MapPosY + 5);
+			}
+			printLine ("Right Hand:",(this.MapWidth/2),this.MapPosX+(this.MapWidth/2) ,this.MapPosY + 6);
+			if(aLevel.Player.Body["RightHand"].Equiped != null){
+				printLine (aLevel.Player.Body["RightHand"].Equiped.GetName (), (this.MapWidth / 2), 
+					this.MapPosX + (this.MapWidth / 2) + 3, this.MapPosY + 7);
+			}
+			printLine ("Left Hand:",(this.MapWidth/2),this.MapPosX+(this.MapWidth/2) ,this.MapPosY + 8);
+			if(aLevel.Player.Body["LeftHand"].Equiped != null){
+				printLine (aLevel.Player.Body["LeftHand"].Equiped.GetName (), (this.MapWidth / 2), 
+					this.MapPosX + (this.MapWidth / 2) + 3, this.MapPosY + 9);
+			}
+			printLine ("Legs:",(this.MapWidth/2),this.MapPosX+(this.MapWidth/2) ,this.MapPosY + 10);
+			if(aLevel.Player.Body["Legs"].Equiped != null){
+				printLine (aLevel.Player.Body["Legs"].Equiped.GetName (), (this.MapWidth / 2), 
+					this.MapPosX + (this.MapWidth / 2) + 3, this.MapPosY + 11);
+			}
+
+			printStats (aLevel);
+			printHistory (aLevel);
+			updateScreen ();
+		}
 
 		public void printMap(Level aLevel){
 			char lTempChar = ' ';
@@ -161,14 +216,13 @@ namespace RogueLike
 			printLine (aLevel.Player.Name,this.StatWidth,this.StatPosX,this.StatPosY+2);
 			printLine ("Health:",this.StatWidth,this.StatPosX,this.StatPosY+4);
 			printLine (aLevel.Player.Health.ToString(),this.StatWidth,this.StatPosX,this.StatPosY+5);
-			printLine ("Str:",this.StatWidth,this.StatPosX,this.StatPosY+7);
-			printLine (aLevel.Player.Stats.Str.ToString(),this.StatWidth,this.StatPosX,this.StatPosY+8);
 
-			//print Inventory
-			printLine ("Inventory:",this.StatWidth,this.StatPosX + (this.StatWidth / 2),this.StatPosY+1);
-			for(int i = 0; i < aLevel.Player.Inventory.Count && i < this.StatWidth - 3; i++){
-				printLine (aLevel.Player.Inventory[i].GetName(),this.StatWidth,this.StatPosX + (this.StatWidth / 2),this.StatPosY + 2 + i);
-			}
+			printLine ("Str:",this.StatWidth,this.StatPosX+ (this.StatWidth / 2) ,this.StatPosY+1);
+			printLine (aLevel.Player.Stats.Str.ToString(),this.StatWidth,this.StatPosX+ (this.StatWidth / 2),this.StatPosY+2);
+			printLine ("Dex:",this.StatWidth,this.StatPosX+ (this.StatWidth / 2) ,this.StatPosY+4);
+			printLine (aLevel.Player.Stats.Dex.ToString(),this.StatWidth,this.StatPosX+ (this.StatWidth / 2),this.StatPosY+5);
+			printLine ("Int:",this.StatWidth,this.StatPosX+ (this.StatWidth / 2) ,this.StatPosY+7);
+			printLine (aLevel.Player.Stats.Int.ToString(),this.StatWidth,this.StatPosX+ (this.StatWidth / 2),this.StatPosY+8);
 		}
 
 		public void printHistory(Level aLevel){

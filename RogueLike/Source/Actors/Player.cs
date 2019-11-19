@@ -4,13 +4,15 @@ namespace RogueLike
 {
 	public enum PlayerMode{
 		Normal,
-		Interact
+		Interact,
+		Inventory
 	}
 
 	public class Player : Actor
 	{
 		public PlayerMode Mode = PlayerMode.Normal;
 		public Coordinate Selection;
+		public int InvSelection;
 		Display Display = Display.Instance;
 
 		public Player (String aName, ActorTemplate aTemplate, int aX, int aY, int aGroup):
@@ -30,9 +32,13 @@ namespace RogueLike
 				case PlayerMode.Interact:
 					lAction = InteractMode (lKeyPressed);
 					break;
+				case PlayerMode.Inventory:
+					lAction = InventoryMode (lKeyPressed);
+					break;
 				}
 				base.level.ComputePlayerFOV ();
-				this.Display.printMainScreen (base.level);
+				Display.printScreen (base.level, this.Mode);
+
 			} while(lAction == null);
 
 			return lAction;
@@ -52,11 +58,7 @@ namespace RogueLike
 					break;
 				case RogueKey.Cancel:
 					break;
-				case RogueKey.Select:
-					if (this.Inventory != null && this.Inventory.Count > 0){
-						lAction = new ConsumeAction (this, this.Inventory [0]);
-					}
-					break;
+				
 				}
 
 			}
@@ -71,7 +73,7 @@ namespace RogueLike
 			} else {
 				switch (aKeyPress){
 				case RogueKey.ChangeMode:
-					Mode = PlayerMode.Normal;
+					Mode = PlayerMode.Inventory;
 					this.Selection.x = 0;
 					this.Selection.y = 0;
 					break;
@@ -94,6 +96,53 @@ namespace RogueLike
 					break;
 				}
 			}
+			return lAction;
+		}
+
+		Action InventoryMode(RogueKey aKeyPress){
+			Action lAction = null;
+
+			switch (aKeyPress){
+			case RogueKey.ChangeMode:
+				Mode = PlayerMode.Normal;
+				this.Selection.x = 0;
+				this.Selection.y = 0;
+				break;
+			case RogueKey.Cancel:
+				Mode = PlayerMode.Normal;
+				this.Selection.x = 0;
+				this.Selection.y = 0;
+				break;
+			case RogueKey.North:
+				if (this.Inventory != null && this.Inventory.Count > 0 && InvSelection > 0) {
+					InvSelection--;
+				}
+				break;
+			case RogueKey.South:
+				if (this.Inventory != null && InvSelection < (this.Inventory.Count - 1)) {
+					InvSelection++;
+				}
+				break;
+			case RogueKey.Select:
+				if (this.Inventory != null && this.Inventory.Count >= 0 && InvSelection < this.Inventory.Count){
+					Item lItem = this.Inventory [InvSelection];
+					bool lResult = true;
+					if (lItem.EquipTo == null) {
+						lAction = new ConsumeAction (this, lItem);
+					} else {
+						lResult = base.Equip (lItem);
+					}
+					if (lResult) {
+						if (InvSelection > 0) {
+							InvSelection--;
+						} else {
+							InvSelection = 0;
+						}
+					}
+				}
+				break;
+			}
+
 			return lAction;
 		}
 	}

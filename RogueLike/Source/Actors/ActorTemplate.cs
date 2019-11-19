@@ -13,24 +13,15 @@ namespace RogueLike
 		public int Int;
 
 		public List<Use> Abilities;
-		public Dictionary<String,String> Tags;
+		public Tags Tags;
 
 		public int Level;
 
 		public ActorTemplate (){
 			this.Abilities = new List<Use> ();
-			this.Tags = new Dictionary<string, string> ();
+			this.Tags = new Tags ();
 		}
 
-		bool AddTag(String aTag){
-			this.Tags.Add (aTag, aTag);
-			return true;
-		}
-
-		public bool HasTag(String aTag){
-			String lValue;
-			return this.Tags.TryGetValue(aTag,out lValue);
-		}
 
 		public bool AttributeCheck(int aBaseStat, int aCheckValue, int aModifier){
 			//times max by 100 to get bigger rand range

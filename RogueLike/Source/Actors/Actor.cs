@@ -9,6 +9,8 @@ namespace RogueLike
 		protected Level level;
 		protected Dungeon dungeon = Dungeon.Instance;
 
+		public Dictionary<String,ActorBodyPart> Body;
+
 		public ActorTemplate Stats;
 		public String Name;
 		public List<Item> Inventory;
@@ -25,6 +27,13 @@ namespace RogueLike
 			this.pos.x = aX;
 			this.pos.y = aY;
 			this.Health = this.Stats.MaxHealth;
+
+			Body = new Dictionary<string, ActorBodyPart> ();
+			Body.Add("LeftHand",new ActorBodyPart("LeftHand"));
+			Body.Add("RightHand",new ActorBodyPart("RightHand"));
+			Body.Add("Head",new ActorBodyPart("Head"));
+			Body.Add("Torso",new ActorBodyPart("Torso"));
+			Body.Add("Legs",new ActorBodyPart("Legs"));
 		}
 
 		public Coordinate GetPos(){
@@ -61,6 +70,24 @@ namespace RogueLike
 			}
 			return isDead;
 		}
+
+		public int GetDefBonus(){
+
+			return 1;
+		}
+
+		public bool Equip(Item aItem){
+			bool lResult = true;
+			if (aItem.EquipTo != null) {
+				if (Body [aItem.EquipTo].Equiped != null) {
+					Inventory.Add (Body [aItem.EquipTo].Equiped);
+				}
+				lResult = Body [aItem.EquipTo].Equip(aItem);
+				Inventory.Remove (aItem);
+			} 
+			return lResult;
+		}
+
 	}
 }
 

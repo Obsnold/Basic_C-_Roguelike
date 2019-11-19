@@ -2,7 +2,7 @@
 <ActorTemplate>
 	<Name>Player</Name>
 	<Level>1</Level>
-	<MaxHealth>10</MaxHealth>
+	<MaxHealth>20</MaxHealth>
 	<Str>2</Str>
 	<Dex>2</Dex>
 	<Int>2</Int>
