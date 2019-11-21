@@ -3,7 +3,7 @@
 	<Name>Sword</Name>
 	<EquipTo>RightHand</EquipTo>
 	<Attack>
-		<minDamage>2</minDamage>
-		<maxDamage>3</maxDamage>
+		<minDamage>1</minDamage>
+		<maxDamage>4</maxDamage>
 	</Attack>
 </Item>

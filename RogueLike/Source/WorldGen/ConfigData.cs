@@ -7,11 +7,23 @@ namespace RogueLike
 {
 	public class ConfigData
 	{
+		static ConfigData mConfigData;
+
 		public Dictionary<String,ActorTemplate> ActorDic;
 		public Dictionary<String,Item> ItemDic;
 		public List<String> ActorNames;
 		public ActorTemplate PlayerTemplate;
 		static String DataLocation = "/home/terry/Documents/Personal/roguelike/RogueLike/RogueLike/Data/";
+
+		public static ConfigData Instance
+		{
+			get{
+				if (mConfigData == null) {
+					mConfigData = new ConfigData ();
+				} 
+				return mConfigData;
+			}
+		}
 
 
 		public ConfigData ()
@@ -81,13 +93,13 @@ namespace RogueLike
 				case "Attack":
 					int lMax = 0;
 					int lMin = 0;
-					foreach (XmlNode l1Node in doc.DocumentElement.ChildNodes) {
+					foreach (XmlNode l1Node in lNode.ChildNodes) {
 						switch (l1Node.Name) {
 						case "minDamage":
-							lMin = Convert.ToInt32(lNode.InnerText);
+							lMin = Convert.ToInt32(l1Node.InnerText);
 							break;
 						case "maxDamage":
-							lMax = Convert.ToInt32(lNode.InnerText);
+							lMax = Convert.ToInt32(l1Node.InnerText);
 							break;
 						}
 					}
@@ -97,16 +109,16 @@ namespace RogueLike
 					int lCon = 0;
 					int lRef = 0;
 					int lWis = 0;
-					foreach (XmlNode l1Node in doc.DocumentElement.ChildNodes) {
+					foreach (XmlNode l1Node in lNode.ChildNodes) {
 						switch (l1Node.Name) {
 						case "Con":
-							lCon = Convert.ToInt32(lNode.InnerText);
+							lCon = Convert.ToInt32(l1Node.InnerText);
 							break;
 						case "Ref":
-							lRef = Convert.ToInt32(lNode.InnerText);
+							lRef = Convert.ToInt32(l1Node.InnerText);
 							break;
 						case "Wis":
-							lWis = Convert.ToInt32(lNode.InnerText);
+							lWis = Convert.ToInt32(l1Node.InnerText);
 							break;
 						}
 					}

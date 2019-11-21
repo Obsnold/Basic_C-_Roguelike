@@ -4,11 +4,7 @@ namespace RogueLike
 {
 	public class ItemGenerator
 	{
-		ConfigData Config;
-		public ItemGenerator ()
-		{
-			Config = new ConfigData ();
-		}
+		ConfigData Config = ConfigData.Instance;
 
 		public bool PopulateLevel(Level aLevel){
 			Item lItem;

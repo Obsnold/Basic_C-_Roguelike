@@ -4,6 +4,6 @@
 	<EquipTo>RightHand</EquipTo>
 	<Attack>
 		<minDamage>1</minDamage>
-		<maxDamage>2</maxDamage>
+		<maxDamage>3</maxDamage>
 	</Attack>
 </Item>
