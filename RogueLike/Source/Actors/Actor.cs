@@ -18,7 +18,6 @@ namespace RogueLike
 		public int Group;
 		public int Vision = 8;
 
-
 		public Actor(String aName, ActorTemplate aTemplate, int aX, int aY, int aGroup){
 			this.Name = aName;
 			this.Stats = aTemplate;
@@ -71,9 +70,42 @@ namespace RogueLike
 			return isDead;
 		}
 
-		public int GetDefBonus(){
+		public int GetMeleeDefence(){
+			int lBonus = this.Stats.Con;
+			foreach (String aPart in Body.Keys) {
+				if (Body [aPart].Equiped != null) {
+					if (Body [aPart].Equiped.defend != null) {
+						lBonus += Body [aPart].Equiped.defend.Con;
+					}
+				}
+			}
+			return lBonus;
+		}
 
-			return 1;
+		public bool MeleeRollToHit(Actor aActor){
+			bool lResult = false;
+			int lRoll = this.Stats.Str + StaticRandom.Instance.Next (0, 100);
+
+			if (lRoll >= aActor.GetMeleeDefence()) {
+				lResult = true;
+			}
+
+			return lResult;
+		}
+
+		public int MeleeDamage(){
+			int lDamage = 0;
+			foreach (String aPart in Body.Keys) {
+				if (Body [aPart].Equiped != null) {
+					if (Body [aPart].Equiped.attack != null) {
+						lDamage += Body [aPart].Equiped.attack.CalculateDamage ();
+					}
+				}
+			}
+			if (lDamage == 0) {
+				lDamage = 1;
+			}
+			return lDamage;
 		}
 
 		public bool Equip(Item aItem){
@@ -88,6 +120,14 @@ namespace RogueLike
 			return lResult;
 		}
 
+		public bool AttributeCheck(int aBaseStat, int aCheckValue, int aModifier = 0){
+			int lResult = StaticRandom.Instance.Next (0,100);
+			if ((lResult + aBaseStat + aModifier) >= aCheckValue) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }
 

@@ -3,9 +3,12 @@
 	<Name>HobGob</Name>
 	<Level>2</Level>
 	<MaxHealth>5</MaxHealth>
-	<Str>2</Str>
+	<Str>1</Str>
+	<Con>1</Con>
 	<Dex>1</Dex>
+	<Ref>1</Ref>
 	<Int>1</Int>
-	<Item>Potion</Item>
+	<Wis>1</Wis>
+	<Item>Sword</Item>
 	<Tag>Goblin</Tag>
 </ActorTemplate>

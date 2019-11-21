@@ -24,7 +24,7 @@ namespace RogueLike
 			// check if there is anyone in the space
 			Actor lTarget = this.Level.ActorGrid.GetItem(lNewPos);
 			if (lTarget != null) {
-				lResult.Alternate (new AttackAction(this.Actor,lTarget));
+				lResult.Alternate (new MeleeAttackAction(this.Actor,lTarget));
 				return lResult;
 			}
 

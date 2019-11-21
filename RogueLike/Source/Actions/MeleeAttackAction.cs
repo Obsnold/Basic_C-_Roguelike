@@ -2,13 +2,13 @@
 
 namespace RogueLike
 {
-	public class AttackAction : Action
+	public class MeleeAttackAction : Action
 	{
 		Level Level;
 		Actor Actor;
 		Actor Target;
 
-		public AttackAction (Actor aActor,Actor aTarget)
+		public MeleeAttackAction (Actor aActor,Actor aTarget)
 		{
 			Dungeon lDungeon = Dungeon.Instance;
 			this.Level = lDungeon.GetCurrentLevel();
@@ -21,13 +21,17 @@ namespace RogueLike
 
 			if (this.Actor.Group == this.Target.Group) {
 				lResult.Failure ();
+			}else if (!this.Actor.MeleeRollToHit(this.Target)) {
+				lResult.Failure ();
+				this.Level.History.AddString (this.Actor.Name + " Misses " + this.Target.Name );
 			} else {
 				lResult.Success ();
-				if (this.Target.TakeDamage (this.Actor.Stats.Str)) {
+				int lDamage = this.Actor.MeleeDamage ();
+				if (this.Target.TakeDamage (lDamage)) {
 					this.Level.removeActor (this.Target);
 					this.Level.History.AddString (this.Target.Name + " the " + this.Target.Stats.Name + " is dead.");
 				} else {
-					this.Level.History.AddString (this.Target.Name + " the " + this.Target.Stats.Name + " is hurt.");
+					this.Level.History.AddString (this.Target.Name + " takes " + lDamage.ToString());
 				}
 			}
 				

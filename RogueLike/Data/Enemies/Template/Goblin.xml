@@ -4,8 +4,11 @@
 	<Level>1</Level>
 	<MaxHealth>5</MaxHealth>
 	<Str>1</Str>
+	<Con>1</Con>
 	<Dex>1</Dex>
+	<Ref>1</Ref>
 	<Int>1</Int>
-	<Item>Potion</Item>
+	<Wis>1</Wis>
+	<Item>Knife</Item>
 	<Tag>Goblin</Tag>
 </ActorTemplate>

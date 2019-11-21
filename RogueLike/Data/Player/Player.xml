@@ -4,8 +4,11 @@
 	<Level>1</Level>
 	<MaxHealth>20</MaxHealth>
 	<Str>2</Str>
+	<Con>2</Con>
 	<Dex>2</Dex>
+	<Ref>2</Ref>
 	<Int>2</Int>
+	<Wis>2</Wis>
 	<Tag>Player</Tag>
 	<Tag>Human</Tag>
 </ActorTemplate>

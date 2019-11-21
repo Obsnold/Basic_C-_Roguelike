@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Item>
-	<Name>Sword</Name>
+	<Name>Knife</Name>
 	<EquipTo>RightHand</EquipTo>
 	<Attack>
-		<minDamage>2</minDamage>
-		<maxDamage>3</maxDamage>
+		<minDamage>1</minDamage>
+		<maxDamage>2</maxDamage>
 	</Attack>
 </Item>

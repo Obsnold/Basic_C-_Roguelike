@@ -84,7 +84,7 @@ namespace RogueLike
 					break;
 				case RogueKey.Select:
 					if (this.level.ActorGrid.GetItem (this.pos + this.Selection) != null) {
-						lAction = new AttackAction (this, this.level.ActorGrid.GetItem (this.pos + this.Selection));
+						lAction = new MeleeAttackAction (this, this.level.ActorGrid.GetItem (this.pos + this.Selection));
 					} else if (this.level.ObjectGrid.GetItem(this.pos + this.Selection) != null){
 						lAction = this.level.ObjectGrid.GetItem (this.pos + this.Selection).DefaultAction (this);
 					} else if (this.level.ItemGrid.GetItem(this.pos + this.Selection) != null){

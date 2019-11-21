@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Item>
+	<Name>Boots</Name>
+	<EquipTo>Legs</EquipTo>
+	<Defend>
+		<Con>2</Con>
+		<Ref>0</Ref>
+		<Wis>0</Wis>
+	</Defend>
+</Item>
