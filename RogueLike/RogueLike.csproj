@@ -49,7 +49,6 @@
     <Compile Include="Source\Actions\Action.cs" />
     <Compile Include="Source\Actors\Actor.cs" />
     <Compile Include="Source\Actions\MoveAction.cs" />
-    <Compile Include="Source\Actions\AttackAction.cs" />
     <Compile Include="Source\Actions\PickUpAction.cs" />
     <Compile Include="Source\Actors\Player.cs" />
     <Compile Include="Source\Enums\Direction.cs" />
@@ -76,6 +75,7 @@
     <Compile Include="Source\WorldGen\GenerateDungeon.cs" />
     <Compile Include="Source\Actors\ActorBodyPart.cs" />
     <Compile Include="Source\BaseClases\Tags.cs" />
+    <Compile Include="Source\Actions\MeleeAttackAction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
