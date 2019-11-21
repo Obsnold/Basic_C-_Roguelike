@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,9 +59,7 @@
     <Compile Include="Source\Actions\ActionResult.cs" />
     <Compile Include="Source\Actions\ConsumeAction.cs" />
     <Compile Include="Source\Dungeon.cs" />
-    <Compile Include="Source\WorldGen\GenerateLevel.cs" />
     <Compile Include="Source\Items\Item.cs" />
-    <Compile Include="Source\Capabilities\Use.cs" />
     <Compile Include="Source\Capabilities\HealUse.cs" />
     <Compile Include="Source\Capabilities\Attack.cs" />
     <Compile Include="Source\Capabilities\Defend.cs" />
@@ -71,11 +70,15 @@
     <Compile Include="Source\BaseClases\StaticRandom.cs" />
     <Compile Include="Source\BaseClases\Debug.cs" />
     <Compile Include="Source\Actors\ActorTemplate.cs" />
-    <Compile Include="Source\WorldGen\GenerateActor.cs" />
-    <Compile Include="Source\WorldGen\GenerateDungeon.cs" />
     <Compile Include="Source\Actors\ActorBodyPart.cs" />
     <Compile Include="Source\BaseClases\Tags.cs" />
     <Compile Include="Source\Actions\MeleeAttackAction.cs" />
+    <Compile Include="Source\WorldGen\ActorGenerator.cs" />
+    <Compile Include="Source\WorldGen\DungeonGenerator.cs" />
+    <Compile Include="Source\WorldGen\ItemGenerator.cs" />
+    <Compile Include="Source\WorldGen\LevelGenerator.cs" />
+    <Compile Include="Source\WorldGen\ConfigData.cs" />
+    <Compile Include="Source\Capabilities\Use.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -104,5 +107,10 @@
     <None Include="Data\Enemies\Template\HobGoblin.xml" />
     <None Include="Data\Enemies\Template\Zombie.xml" />
     <None Include="Data\Items\Sword.xml" />
+    <None Include="Data\Items\Knife.xml" />
+    <None Include="Data\Items\Shield.xml" />
+    <None Include="Data\Items\Helmet.xml" />
+    <None Include="Data\Items\ChainMail.xml" />
+    <None Include="Data\Items\Boots.xml" />
   </ItemGroup>
 </Project>
