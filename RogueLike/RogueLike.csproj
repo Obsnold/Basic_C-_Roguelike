@@ -77,8 +77,8 @@
     <Compile Include="Source\WorldGen\DungeonGenerator.cs" />
     <Compile Include="Source\WorldGen\ItemGenerator.cs" />
     <Compile Include="Source\WorldGen\LevelGenerator.cs" />
-    <Compile Include="Source\WorldGen\ConfigData.cs" />
     <Compile Include="Source\Capabilities\Use.cs" />
+    <Compile Include="Source\WorldGen\ConfigData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -101,16 +101,39 @@
     <Folder Include="Data\Items\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Player\Player.xml" />
-    <None Include="Data\Enemies\Template\Goblin.xml" />
-    <None Include="Data\Enemies\Names\GoblinNames.xml" />
-    <None Include="Data\Enemies\Template\HobGoblin.xml" />
-    <None Include="Data\Enemies\Template\Zombie.xml" />
-    <None Include="Data\Items\Sword.xml" />
-    <None Include="Data\Items\Knife.xml" />
-    <None Include="Data\Items\Shield.xml" />
-    <None Include="Data\Items\Helmet.xml" />
-    <None Include="Data\Items\ChainMail.xml" />
-    <None Include="Data\Items\Boots.xml" />
+    <Content Include="Data\Enemies\Template\Goblin.xml">
+      <LogicalName>RogueLike.Data.Enemies.Template.Goblin.xml</LogicalName>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Enemies\Template\HobGoblin.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Enemies\Template\Zombie.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Items\Boots.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Items\ChainMail.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Items\Helmet.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Items\Knife.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Items\Shield.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Items\Sword.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Player\Player.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Enemies\Names\GoblinNames.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

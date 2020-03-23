@@ -13,7 +13,7 @@ namespace RogueLike
 		public Dictionary<String,Item> ItemDic;
 		public List<String> ActorNames;
 		public ActorTemplate PlayerTemplate;
-		static String DataLocation = "/home/terry/Documents/Personal/roguelike/RogueLike/RogueLike/Data/";
+		static String DataLocation = "Data/";
 
 		public static ConfigData Instance
 		{
