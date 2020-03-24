@@ -3,6 +3,9 @@ This a basic rougelike I made in Monodevelop just to mess around and I didn't wa
 The code is pretty awful and basically everything needs to be changed but it is in a vaguely playable state.
 I've only tested this on Linux but in theory it should run on Windows and Mac maybe with some small changes.
 
+![Example](./RoguelikeExample.gif)
+
+
 ## Controls
   * Movement - QWEADZXC
   * Select - Enter
